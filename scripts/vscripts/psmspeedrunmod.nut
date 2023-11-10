@@ -67,7 +67,7 @@ function SpeedrunModLoad() {
         EntFire("func_button", "Press")
         EntFire("Junkyard_Entrance_Door", "SetAnimation", "open_idle", 0.3)
         EntFire("Junkyard_Entrance_Door", "SetAnimation", "open_idle", 0.5) // Just in case (I don't know why this is also here in srm lmao)
-        EntFire("junkyard_entrance_prop", "Kill", 0, 1)
+        // EntFire("junkyard_entrance_prop", "Kill", 0, 1)
 
         // my favourite activity is killing doors YEP
         EntFire("corridor_slidy_door", "Kill", 0, 1)
