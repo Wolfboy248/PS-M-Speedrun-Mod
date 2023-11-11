@@ -11,6 +11,31 @@ srm.mapspawn <- function () {
     local advanced = GetMapName().slice(0,2) == "sp"
 
     switch (mapName) {
+        case "tramride":
+            local auto = Entities.FindByClassnameNearest("logic_auto", Vector(-6096, -6152, -112), 10)
+            EntFireByHandle(auto, "disable", "", 0, null, null)
+            EntFire("StartFade", "FadeReverse", "")
+            EntFire("StartFade", "kill", "")
+            EntFire("mel_logo", "kill")
+            EntFire("mel_logo_camera_mover", "kill")
+            EntFire("Intro_Viewcontroller", "disable", "", 3)                           // fuck??
+            EntFire("Mel_Logo_Sound", "kill", "")
+            EntFire("StartFade2", "kill", "")
+            EntFire("StartFade", "FadeReverse", "", 2)
+            EntFire("Subway_TankTrain", "StartForward", "", 0.6)
+            EntFire("chapter_subtitle_text", "Display", "", 3)
+            EntFire("chapter_title_text", "Display", "", 3)
+
+            EntFire("lonewolf_loves_speedrunners_sound", "kill")
+            EntFire("math_7", "add", "100")
+            EntFire("thats_numberwang", "add", "100")
+            EntFire("speedrun_go", "use", "")
+            EntFire("speedmod", "modifyspeed", "1", 1)
+
+            local endTrigger = Entities.FindByName(null, "lonewolf_is_kind")
+            EntFireByHandle(endTrigger, "AddOutput", "OnTrigger !self:RunScriptCode:SendToConsole(\"changelevel "+ (advanced ? "sp" : "st") + "_a1_mel_intro\"):0:1", 0, null, null)
+            break
+
         case "mel_intro":
             // kills the start door in the tram
             EntFire("AutoInstance1-tram_Subway_Model", "Kill", 0, 1)
@@ -27,7 +52,7 @@ srm.mapspawn <- function () {
 
             // PLEASE JUST LET ME KILL STUFF AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (hi alexz :])
             EntFire("@command", "Command", "ent_fire lift_door break", 1)
-            
+
             break
 
         case "junkyard":
