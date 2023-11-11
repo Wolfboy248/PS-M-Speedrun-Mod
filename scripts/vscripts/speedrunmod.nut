@@ -56,6 +56,13 @@ srm.mapspawn <- function () {
             srm.transitionTrigger(endTrigger, "a1_garden")
             break
 
+        case "garden":
+            EntFire("lift_door", "kill")
+            EntFire("l_e_gl_door", "setspeed", 350)
+            EntFire("l_e_gr_door", "setspeed", 350)
+
+            EntFire("sleepy_lobby_door", "setspeed", 1350)
+
         case "junkyard":
 
             // beginning door button to open door (crazy)
@@ -64,10 +71,23 @@ srm.mapspawn <- function () {
             EntFire("Junkyard_Entrance_Door", "SetAnimation", "open_idle", 0.3)
             EntFire("Junkyard_Entrance_Door", "SetAnimation", "open_idle", 0.5) // Just in case (I don't know why this is also here in srm lmao)
 
+            EntFire("junkyard_entrance_prop", "setplaybackrate", 300)
+            EntFire("junkyard_entrance_prop", "SetAnimation", "vert_door_opening")
+            EntFire("junkyard_entrance_ap", "open")
+
+            // main door trigger kill cuz we do that at the start of tha map spawn
+            local mainDoorTrig = Entities.FindByClassnameNearest("trigger_once", Vector(432, -352, 112), 10)
+            EntFireByHandle(mainDoorTrig, "Kill", "", 0, null, null)
+
             // my favourite activity is killing doors YEP
             EntFire("corridor_slidy_door", "Kill", 0, 1)
             EntFire("upper_door_4", "Kill", 0, 1)
             EntFire("AutoInstance1-door_model1", "Kill", 0, 1)
+
+            // ending ele
+            // EntFire("lift_track_3")
+            EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:startforward")
+            EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:SetSpeed", 3)
 
         default:
             break;
