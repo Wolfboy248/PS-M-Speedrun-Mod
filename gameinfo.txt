@@ -9,6 +9,8 @@
 	
 	developer		"Prism Studios"
 	developer_url	"http://www.prismstudios.org/"
+
+    icon			"resource/icon"
 	
     FileSystem
     {
