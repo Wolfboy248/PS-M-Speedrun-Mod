@@ -1,3 +1,5 @@
+FIRST_MAP_WITH_POTATO_GUN <- ""
+
 ::srm <- {}
 
 mapName <- GetMapName().slice(6)
@@ -61,7 +63,19 @@ srm.mapspawn <- function () {
             EntFire("l_e_gl_door", "setspeed", 350)
             EntFire("l_e_gr_door", "setspeed", 350)
 
-            EntFire("sleepy_lobby_door", "setspeed", 1350)
+            // destroy open door trigger
+            local doorTrig = Entities.FindByClassnameNearest("trigger_multiple", Vector(2208, 1664, 96), 10)
+            EntFireByHandle(doorTrig, "Kill", "", 0, null, null)
+
+            // MOORDOOR
+            EntFire("sleepy_lobby_door", "SetAnimation", "open", 0.3)
+            EntFire("door_button", "Press")
+            EntFire("sleep_lab_real_door", "SetAnimation", "open", 0.3)
+
+            // bed stuff
+            local bedActivate = Entities.FindByClassnameNearest("trigger_once", Vector(2208, 1664, 96), 10)
+            EntFireByHandle(bedActivate, "AddOutput", "OnTouch sleep_button:unlock", 0, null, null)
+            break
 
         case "junkyard":
 
@@ -88,6 +102,7 @@ srm.mapspawn <- function () {
             // EntFire("lift_track_3")
             EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:startforward")
             EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:SetSpeed", 3)
+            break
 
         default:
             break;
