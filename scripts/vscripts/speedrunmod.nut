@@ -60,8 +60,12 @@ srm.mapspawn <- function () {
 
         case "garden":
             EntFire("lift_door", "kill")
-            EntFire("l_e_gl_door", "setspeed", 350)
-            EntFire("l_e_gr_door", "setspeed", 350)
+            EntFire("autoinstance1-l_e_gr_door", "open", 0, 0.2)
+            EntFire("autoinstance1-l_e_gl_door", "open", 0, 0.2)
+            EntFire("autoinstance1-l_e_gr_door", "setspeed", 450, 0.3)
+            EntFire("autoinstance1-l_e_gl_door", "setspeed", 450, 0.3)
+            EntFire("autoinstance1-intro_huge_door_right", "open", 0, 0.2)
+            EntFire("autoinstance1-intro_huge_door_left", "open", 0, 0.2)
 
             // destroy open door trigger
             local doorTrig = Entities.FindByClassnameNearest("trigger_multiple", Vector(2208, 1664, 96), 10)
@@ -74,7 +78,9 @@ srm.mapspawn <- function () {
 
             // bed stuff
             local bedActivate = Entities.FindByClassnameNearest("trigger_once", Vector(2208, 1664, 96), 10)
-            EntFireByHandle(bedActivate, "AddOutput", "OnTouch sleep_button:unlock", 0, null, null)
+            // EntFireByHandle(bedActivate, "AddOutput", "OnTouch sleep_button:unlock", 1, null, null)
+            EntFire("sleep_button", "unlock", 0, 1)
+            EntFire("open_bed_rl", "trigger", 0, 1)
             break
 
         case "junkyard":
