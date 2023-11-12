@@ -1,4 +1,4 @@
-# PS-M-Speedrun-Mod
+# PS:M Speedrun Mod
 
 ## Done
 - Chapter 1
