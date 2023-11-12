@@ -1,5 +1,4 @@
 # PS-M-Speedrun-Mod
-cool (very)
 
 ## Done
 - Chapter 1
