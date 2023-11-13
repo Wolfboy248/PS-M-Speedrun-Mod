@@ -17,6 +17,7 @@ srm.transitionTrigger <- function (trigger, map) {
 
 srm.mapspawn <- function () {
     switch (mapName) {
+        // CHAPTER 1
         case "tramride":
             local auto = Entities.FindByClassnameNearest("logic_auto", Vector(-6096, -6152, -112), 10)
             EntFireByHandle(auto, "disable", "", 0, null, null)
@@ -76,15 +77,31 @@ srm.mapspawn <- function () {
             EntFire("door_button", "Press")
             EntFire("sleep_lab_real_door", "SetAnimation", "open", 0.3)
 
-            // bed stuff
-            local bedActivate = Entities.FindByClassnameNearest("trigger_once", Vector(2208, 1664, 96), 10)
-            // EntFireByHandle(bedActivate, "AddOutput", "OnTouch sleep_button:unlock", 1, null, null)
             EntFire("sleep_button", "unlock", 0, 1)
             EntFire("open_bed_rl", "trigger", 0, 1)
             break
 
-        case "junkyard":
+        // CHAPTER 2
+        case "garden_de":
+            FastUndergroundTransition(null, 2)
 
+            EntFire("bedroom_button", "unlock")
+            EntFire("bedroom_button", "press")
+
+            // OPTIMUS DOOR
+            EntFire("func_button", "Press") // this is also the cause of the load crash at the start of the map.
+                                            // It's pressing the last door button so it makes the beam fall.
+
+            // remove automatic door trigger in lobby and automatically open it on map load
+            local removeTrig = Entities.FindByClassnameNearest("trigger_multiple", Vector(1744, 2460, 96), 10)
+            EntFireByHandle(removeTrig, "kill", "", 0, null, null)
+            EntFire("lower_office_door", "SetAnimation", "open")
+
+            // beeg door
+            EntFire("vault_manager", "AddOutput", "OnChangeToAllTrue vault_door:setplaybackrate:100:0.3:-1")
+            break
+
+        case "junkyard":
             // beginning door button to open door (crazy)
             EntFire("func_button", "Press")
             // open ne noor faster
@@ -113,4 +130,41 @@ srm.mapspawn <- function () {
         default:
             break;
     }
+}
+
+// slightly modified p2sm function that makes old aperture ele's faster. Adjusted to mel's way of transitioning
+function FastUndergroundTransition(idin, idout){
+  if(idout){
+    local elename = "InstanceAuto"+idout+"-exit_lift_doortop_movelinear"
+    local elename2 = "InstanceAuto"+idout+"-exit_lift_train"
+    local elename3 = "InstanceAuto"+idout+"-exit_lift_doorbottom_movelinear"
+    if(idout<0){
+      elename = "exit_lift_doortop_movelinear"
+      elename2 = "exit_lift_train"
+      elename3 = "exit_lift_doorbottom_movelinear"
+    }
+    EntFire(elename, "AddOutput", "OnFullyClosed "+elename2+":StartForward::0:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed @transition_script:RunScriptCode:TransitionReady():0:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed @transition_script:RunScriptCode:modlog(\"Fast transition will be executed in 1 second...\"):0:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:changelevel st_a2_underbounce:1.8:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
+    EntFire(elename2, "SetMaxSpeed", 250)
+
+    //make end eles already opened
+    EntFire(elename, "Open")
+    EntFire(elename3, "Open")
+  }
+  if(idin){
+    local elename = "InstanceAuto"+idin+"-entrance_lift_train"
+    local elename2 = "InstanceAuto"+idin+"-entrance_lift_train_path_2"
+    if(idin<0){
+      elename = "entrance_lift_train"
+      elename2 = "entrance_lift_train_path_2"
+    }
+    EntFire(elename, "SetMaxSpeed", 250)
+    EntFire(elename, "SetSpeed", 250, 0.1)
+    EntFire(elename2, "inpass", 0, 1.1)
+  }
+  
 }
