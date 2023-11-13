@@ -83,7 +83,7 @@ srm.mapspawn <- function () {
 
         // CHAPTER 2
         case "garden_de":
-            FastUndergroundTransition(null, 2)
+            FastUndergroundTransition(null, 2, "underbounce")
 
             EntFire("bedroom_button", "unlock")
             EntFire("bedroom_button", "press")
@@ -99,6 +99,11 @@ srm.mapspawn <- function () {
 
             // beeg door
             EntFire("vault_manager", "AddOutput", "OnChangeToAllTrue vault_door:setplaybackrate:100:0.3:-1")
+            break
+
+        case "underbounce":
+            FastUndergroundTransition(1, 13, "once_upon")
+
             break
 
         case "junkyard":
@@ -133,7 +138,7 @@ srm.mapspawn <- function () {
 }
 
 // slightly modified p2sm function that makes old aperture ele's faster. Adjusted to mel's way of transitioning
-function FastUndergroundTransition(idin, idout){
+function FastUndergroundTransition(idin, idout, mapNext){
   if(idout){
     local elename = "InstanceAuto"+idout+"-exit_lift_doortop_movelinear"
     local elename2 = "InstanceAuto"+idout+"-exit_lift_train"
@@ -143,11 +148,12 @@ function FastUndergroundTransition(idin, idout){
       elename2 = "exit_lift_train"
       elename3 = "exit_lift_doorbottom_movelinear"
     }
+
     EntFire(elename, "AddOutput", "OnFullyClosed "+elename2+":StartForward::0:1")
     EntFire(elename, "AddOutput", "OnFullyClosed @transition_script:RunScriptCode:TransitionReady():0:1")
     EntFire(elename, "AddOutput", "OnFullyClosed @transition_script:RunScriptCode:modlog(\"Fast transition will be executed in 1 second...\"):0:1")
     EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
-    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:changelevel st_a2_underbounce:1.8:1")
+    
     EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
     EntFire(elename2, "SetMaxSpeed", 250)
 
@@ -155,6 +161,15 @@ function FastUndergroundTransition(idin, idout){
     EntFire(elename, "Open")
     EntFire(elename3, "Open")
   }
+
+  if(mapNext){
+    local elename = "InstanceAuto"+idout+"-exit_lift_doortop_movelinear"
+    local nextMap = mapNext
+
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:changelevel st_a2_" + nextMap + ":1.8:1")
+  }
+
+  
   if(idin){
     local elename = "InstanceAuto"+idin+"-entrance_lift_train"
     local elename2 = "InstanceAuto"+idin+"-entrance_lift_train_path_2"
