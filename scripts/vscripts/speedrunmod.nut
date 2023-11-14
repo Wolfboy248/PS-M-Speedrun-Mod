@@ -115,6 +115,21 @@ srm.mapspawn <- function () {
             
             break
 
+        case "past_power":
+            FastOldApertureTransitionPASTPOWER(-1, -1, "ramp")
+
+            break
+
+        case "ramp":
+            FastOldApertureTransition(-1, -1, "firestorm")
+
+            break
+
+        case "firestorm":
+            FastOldApertureTransition(15, null, "firestorm")
+
+            break
+
         case "junkyard":
             // beginning door button to open door (crazy)
             EntFire("func_button", "Press")
@@ -159,8 +174,6 @@ function FastOldApertureTransition(idin, idout, mapNext){
     }
 
     EntFire(elename, "AddOutput", "OnFullyClosed "+elename2+":StartForward::0:1")
-    // EntFire(elename, "AddOutput", "OnFullyClosed @transition_script:RunScriptCode:TransitionReady():0:1")
-    // EntFire(elename, "AddOutput", "OnFullyClosed @transition_script:RunScriptCode:modlog(\"Fast transition will be executed in 1 second...\"):0:1")
     EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
     EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
     EntFire(elename2, "SetMaxSpeed", 250)
@@ -174,7 +187,12 @@ function FastOldApertureTransition(idin, idout, mapNext){
     local elename = "InstanceAuto"+idout+"-exit_lift_doortop_movelinear"
     local nextMap = mapNext
 
+    if(idout<0){
+      elename = "exit_elevator-exit_lift_doortop_movelinear"
+    }
     EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:changelevel st_a2_" + nextMap + ":1.8:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
   }
 
   
@@ -189,7 +207,54 @@ function FastOldApertureTransition(idin, idout, mapNext){
     EntFire(elename, "SetSpeed", 250, 0.1)
     EntFire(elename2, "inpass", 0, 0.7)
   }
+  
+}
 
-//   printl(elename + ", " + elename1 + ", " + elename2 + ", " + elename3)
+function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
+  if(idout){
+    local elename = "autoinstance1-exit_elevator-exit_lift_doortop_movelinear"
+    local elename2 = "autoinstance1-exit_elevator-exit_lift_train"
+    local elename3 = "autoinstance1-exit_elevator-exit_lift_doorbottom_movelinear"
+    printl(elename3)
+    if(idout=-1){
+      elename = "autoinstance1-exit_elevator-exit_lift_doortop_movelinear"
+      elename2 = "autoinstance1-exit_elevator-exit_lift_train"
+      elename3 = "autoinstance1-exit_elevator-exit_lift_doorbottom_movelinear"
+    }
+
+    EntFire(elename, "AddOutput", "OnFullyClosed "+elename2+":StartForward::0:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
+    EntFire(elename2, "SetMaxSpeed", 250)
+
+    //make end eles already opened
+    EntFire(elename, "Open")
+    EntFire(elename3, "Open")
+  }
+
+  if(mapNext){
+    local elename = "autoinstance1-exit_elevator-exit_lift_doortop_movelinear"
+    local nextMap = mapNext
+
+    if(idout=-1){
+      elename = "autoinstance1-exit_elevator-exit_lift_doortop_movelinear"
+    }
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:changelevel st_a2_" + nextMap + ":1.8:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
+  }
+
+  
+  if(idin){
+    local elename = "InstanceAuto"+idin+"-entrance_lift_train"
+    local elename2 = "InstanceAuto"+idin+"-entrance_lift_train_path_2"
+    if(idin=-1){
+      elename = "elevator-entrance_lift_train"
+      elename2 = "elevator-entrance_lift_train_path_2"
+    }
+    EntFire(elename, "SetMaxSpeed", 250)
+    EntFire(elename, "SetSpeed", 250, 0.1)
+    EntFire(elename2, "inpass", 0, 0.7)
+  }
   
 }
