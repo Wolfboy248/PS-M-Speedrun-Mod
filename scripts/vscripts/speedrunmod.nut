@@ -88,6 +88,18 @@ srm.mapspawn <- function () {
             EntFire("bedroom_button", "unlock")
             EntFire("bedroom_button", "press")
 
+            // remove pgun anim
+            EntFire("relay_melgun", "kill")
+
+            // giving the portal gun and killing wooden door
+            EntFire("pickup_scene", "AddOutput", "OnPressed relay_melgun:Kill:give_portalgun:0:1")
+            EntFire("pickup_scene", "AddOutput", "OnPressed door_brush:Kill::0:1")
+            EntFire("pickup_scene", "AddOutput", "OnPressed pg_wood_blocker:TurnOff::0:1")
+            EntFire("pickup_scene", "AddOutput", "OnPressed end_command:Command:give_portalgun:0:1")
+            EntFire("pickup_scene", "AddOutput", "OnPressed end_command:Command:upgrade_portalgun:0.1:1")
+
+            // teleport player after pickup of pgun
+
             // OPTIMUS DOOR
             EntFire("func_button", "Press") // this is also the cause of the load crash at the start of the map.
                                             // It's pressing the last door button so it makes the beam fall.
