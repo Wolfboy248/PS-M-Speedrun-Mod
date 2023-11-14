@@ -98,8 +98,6 @@ srm.mapspawn <- function () {
             EntFire("pickup_scene", "AddOutput", "OnPressed end_command:Command:give_portalgun:0:1")
             EntFire("pickup_scene", "AddOutput", "OnPressed end_command:Command:upgrade_portalgun:0.1:1")
 
-            // teleport player after pickup of pgun
-
             // OPTIMUS DOOR
             EntFire("func_button", "Press") // this is also the cause of the load crash at the start of the map.
                                             // It's pressing the last door button so it makes the beam fall.
@@ -110,25 +108,34 @@ srm.mapspawn <- function () {
             EntFire("lower_office_door", "SetAnimation", "open")
 
             // beeg door
-            EntFire("vault_manager", "AddOutput", "OnChangeToAllTrue vault_door:setplaybackrate:100:0.3:-1")
+            EntFire("vault_manager", "AddOutput", "OnChangeToAllTrue vault_door:setplaybackrate:50:0.3:-1")
             break
 
         case "underbounce":
+            underbounceTeleport()
+
             FastOldApertureTransition(1, 13, "once_upon")
+
+            // kill the stupid ass lights
+            local stupidLights = Entities.FindByName("logic_relay", "Power_On_Start_Relay")
+            EntFireByHandle(stupidLights, "kill", "", 0, null, null)
 
             break
         
         case "once_upon":
             FastOldApertureTransition(-1, -1, "past_power")
 
-            // killing ele trigger
-            local endTrig = Entities.FindByClassnameNearest("trigger_once", Vector(1640, -1848, 2814.9), 10)
-            EntFireByHandle(endTrig, "kill", "", 0, null, null)
+            local startTrig = Entities.FindByClassnameNearest("trigger_once", Vector(3072, -1200, 1900), 10)
+
+            EntFireByHandle(startTrig, "AddOutput", "OnStartTouch entry_door-door_prop:setplaybackrate:3:0.1:-1", 0, null, null)
             
             break
 
         case "past_power":
             FastOldApertureTransitionPASTPOWER(-1, -1, "ramp")
+
+            local startTrig = Entities.FindByClassnameNearest("trigger_once", Vector(1136, 272, 239), 10)
+            EntFireByHandle(startTrig, "AddOutput", "OnStartTouch room_1_door_0-door_prop:setplaybackrate:4:0.1:-1", 0, null, null)
 
             break
 
@@ -139,6 +146,8 @@ srm.mapspawn <- function () {
 
         case "firestorm":
             FastOldApertureTransition(15, null, "firestorm")
+
+            EntFire("rl_gate_l", "kill")
 
             break
 
@@ -171,6 +180,52 @@ srm.mapspawn <- function () {
         default:
             break;
     }
+}
+
+function melgunTeleport() {
+  player.SetVelocity(Vector(0, 0, 0))
+  player.SetAngles(0.86, -147.77, 0.00)
+  player.SetOrigin(Vector(2865.38, 1665.63, 96.03))
+}
+
+function underbounceTeleport() {
+  player.SetOrigin(Vector(-552, -192, -101))
+
+  EntFire("autoinstance1-entrance_lift_prop", "kill", 0.1)
+  EntFire("autoinstance1-entrance_lift_doortop_prop", "disable", 0, 0)
+  EntFire("AutoInstance1-entrance_lift_doorbottom_prop", "disable", 0, 0)
+  EntFire("autoinstance1-entrance_lift_doortop_prop", "enable", 0, 1)
+  EntFire("AutoInstance1-entrance_lift_doorbottom_prop", "enable", 0, 1)
+  EntFire("autoinstance1-entrance_lift_doortop_movelinear", "open", 0, 1)
+  EntFire("AutoInstance1-entrance_lift_doorbottom_movelinear", "open", 0, 1)
+
+  local door = null
+  local door2 = null
+  local temp = null
+  local temp2 = null
+  while (temp = Entities.Next(temp)) {
+    if (temp == null) { break }
+    if (temp.entindex() == 42) { door = temp; break }
+  }
+  if (door != null) {
+    EntFireByHandle(door, "kill", "", 1, null, null)
+  }
+  while (temp2 = Entities.Next(temp2)) {
+    if (temp2 == null) { break }
+    if (temp2.entindex() == 41) { door2 = temp2; break }
+  }
+  if (door2 != null) {
+    EntFireByHandle(door2, "kill", "", 1, null, null)
+  }
+  
+
+  local startEle = Entities.FindByClassnameNearest("func_tracktrain", Vector(-552, -5824, -192) 10)
+  startEle.SetOrigin(Vector(-552, -192, -50))
+  EntFireByHandle(startEle, "setmaxspeed", "250", 0, null, null)
+  EntFireByHandle(startEle, "setspeed", "250", 0, null, null)
+
+  local path = Entities.FindByClassnameNearest("path_track", Vector(-552, -5824, 192) 10)
+  path.SetOrigin(Vector(-552, -192, 181))
 }
 
 // slightly modified p2sm function that makes old aperture ele's faster. Adjusted to mel's way of transitioning
@@ -228,7 +283,7 @@ function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
     local elename2 = "autoinstance1-exit_elevator-exit_lift_train"
     local elename3 = "autoinstance1-exit_elevator-exit_lift_doorbottom_movelinear"
     printl(elename3)
-    if(idout=-1){
+    if(idout<0){
       elename = "autoinstance1-exit_elevator-exit_lift_doortop_movelinear"
       elename2 = "autoinstance1-exit_elevator-exit_lift_train"
       elename3 = "autoinstance1-exit_elevator-exit_lift_doorbottom_movelinear"
@@ -236,7 +291,7 @@ function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
 
     EntFire(elename, "AddOutput", "OnFullyClosed "+elename2+":StartForward::0:1")
     EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
-    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:1.5:1")
     EntFire(elename2, "SetMaxSpeed", 250)
 
     //make end eles already opened
@@ -248,19 +303,19 @@ function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
     local elename = "autoinstance1-exit_elevator-exit_lift_doortop_movelinear"
     local nextMap = mapNext
 
-    if(idout=-1){
+    if(idout<0){
       elename = "autoinstance1-exit_elevator-exit_lift_doortop_movelinear"
     }
-    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:changelevel st_a2_" + nextMap + ":1.8:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:changelevel st_a2_" + nextMap + ":1:1")
     EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
-    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:1.5:1")
   }
 
   
   if(idin){
     local elename = "InstanceAuto"+idin+"-entrance_lift_train"
     local elename2 = "InstanceAuto"+idin+"-entrance_lift_train_path_2"
-    if(idin=-1){
+    if(idin<0){
       elename = "elevator-entrance_lift_train"
       elename2 = "elevator-entrance_lift_train_path_2"
     }
