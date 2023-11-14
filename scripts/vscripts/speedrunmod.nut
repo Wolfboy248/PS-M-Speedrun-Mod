@@ -83,7 +83,7 @@ srm.mapspawn <- function () {
 
         // CHAPTER 2
         case "garden_de":
-            FastUndergroundTransition(null, 2, "underbounce")
+            FastOldApertureTransition(null, 2, "underbounce")
 
             EntFire("bedroom_button", "unlock")
             EntFire("bedroom_button", "press")
@@ -102,8 +102,17 @@ srm.mapspawn <- function () {
             break
 
         case "underbounce":
-            FastUndergroundTransition(1, 13, "once_upon")
+            FastOldApertureTransition(1, 13, "once_upon")
 
+            break
+        
+        case "once_upon":
+            FastOldApertureTransition(-1, -1, "past_power")
+
+            // killing ele trigger
+            local endTrig = Entities.FindByClassnameNearest("trigger_once", Vector(1640, -1848, 2814.9), 10)
+            EntFireByHandle(endTrig, "kill", "", 0, null, null)
+            
             break
 
         case "junkyard":
@@ -138,22 +147,21 @@ srm.mapspawn <- function () {
 }
 
 // slightly modified p2sm function that makes old aperture ele's faster. Adjusted to mel's way of transitioning
-function FastUndergroundTransition(idin, idout, mapNext){
+function FastOldApertureTransition(idin, idout, mapNext){
   if(idout){
     local elename = "InstanceAuto"+idout+"-exit_lift_doortop_movelinear"
     local elename2 = "InstanceAuto"+idout+"-exit_lift_train"
     local elename3 = "InstanceAuto"+idout+"-exit_lift_doorbottom_movelinear"
     if(idout<0){
-      elename = "exit_lift_doortop_movelinear"
-      elename2 = "exit_lift_train"
-      elename3 = "exit_lift_doorbottom_movelinear"
+      elename = "exit_elevator-exit_lift_doortop_movelinear"
+      elename2 = "exit_elevator-exit_lift_train"
+      elename3 = "exit_elevator-exit_lift_doorbottom_movelinear"
     }
 
     EntFire(elename, "AddOutput", "OnFullyClosed "+elename2+":StartForward::0:1")
-    EntFire(elename, "AddOutput", "OnFullyClosed @transition_script:RunScriptCode:TransitionReady():0:1")
-    EntFire(elename, "AddOutput", "OnFullyClosed @transition_script:RunScriptCode:modlog(\"Fast transition will be executed in 1 second...\"):0:1")
+    // EntFire(elename, "AddOutput", "OnFullyClosed @transition_script:RunScriptCode:TransitionReady():0:1")
+    // EntFire(elename, "AddOutput", "OnFullyClosed @transition_script:RunScriptCode:modlog(\"Fast transition will be executed in 1 second...\"):0:1")
     EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
-    
     EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
     EntFire(elename2, "SetMaxSpeed", 250)
 
@@ -174,12 +182,14 @@ function FastUndergroundTransition(idin, idout, mapNext){
     local elename = "InstanceAuto"+idin+"-entrance_lift_train"
     local elename2 = "InstanceAuto"+idin+"-entrance_lift_train_path_2"
     if(idin<0){
-      elename = "entrance_lift_train"
-      elename2 = "entrance_lift_train_path_2"
+      elename = "elevator-entrance_lift_train"
+      elename2 = "elevator-entrance_lift_train_path_2"
     }
     EntFire(elename, "SetMaxSpeed", 250)
     EntFire(elename, "SetSpeed", 250, 0.1)
-    EntFire(elename2, "inpass", 0, 1.1)
+    EntFire(elename2, "inpass", 0, 0.7)
   }
+
+//   printl(elename + ", " + elename1 + ", " + elename2 + ", " + elename3)
   
 }
