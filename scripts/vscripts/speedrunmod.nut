@@ -93,10 +93,17 @@ srm.mapspawn <- function () {
 
             // giving the portal gun and killing wooden door
             EntFire("pickup_scene", "AddOutput", "OnPressed relay_melgun:Kill:give_portalgun:0:1")
-            EntFire("pickup_scene", "AddOutput", "OnPressed door_brush:Kill::0:1")
-            EntFire("pickup_scene", "AddOutput", "OnPressed pg_wood_blocker:TurnOff::0:1")
+            // EntFire("pickup_scene", "AddOutput", "OnPressed door_brush:Kill::0:1")
+            // EntFire("pickup_scene", "AddOutput", "OnPressed pg_wood_blocker:TurnOff::0:1")
             EntFire("pickup_scene", "AddOutput", "OnPressed end_command:Command:give_portalgun:0:1")
             EntFire("pickup_scene", "AddOutput", "OnPressed end_command:Command:upgrade_portalgun:0.1:1")
+
+            // killing the doors from the start
+            EntFire("pg_wood_blocker", "TurnOff")
+            EntFire("door_brush", "kill")
+
+            // teleporting player. Not used.
+            // EntFire("pickup_scene", "AddOutput", "OnPressed end_command:Command:script_execute meltele:0:1")
 
             // OPTIMUS DOOR
             EntFire("func_button", "Press") // this is also the cause of the load crash at the start of the map.
@@ -137,6 +144,14 @@ srm.mapspawn <- function () {
             local startTrig = Entities.FindByClassnameNearest("trigger_once", Vector(1136, 272, 239), 10)
             EntFireByHandle(startTrig, "AddOutput", "OnStartTouch room_1_door_0-door_prop:setplaybackrate:4:0.1:-1", 0, null, null)
 
+            EntFire("func_button", "press")
+            EntFire("sd1_door", "setanimation", "open")
+            EntFire("gel_door", "AddOutput", "OnOpen walkway_door1:Open:0:-1")
+            EntFire("gel_door", "AddOutput", "OnOpen walkway_door2:Open:0:-1")
+
+            local gelDoor = Entities.FindByClassnameNearest("prop_dynamic", Vector(-2184, -544, -192), 10)
+            EntFireByHandle(gelDoor, "kill", "", 0, null, null)
+
             break
 
         case "ramp":
@@ -147,7 +162,20 @@ srm.mapspawn <- function () {
         case "firestorm":
             FastOldApertureTransition(15, null, "firestorm")
 
-            EntFire("rl_gate_l", "kill")
+            EntFire("r1_gate_1", "kill")
+
+            EntFire("lower_lift_button", "unlock", 0, 0.2)
+            EntFire("lower_lift_button", "press", 0, 0.3)
+
+            EntFire("main_elevator_up_relay", "AddOutput", "OnTrigger main_elevator:SetMaxSpeed:300:0.1:1")
+            EntFire("main_elevator_up_relay", "AddOutput", "OnTrigger main_elevator:SetSpeed:300:0.1:1")
+
+            EntFire("AutoInstance1-sd1_door2", "SetAnimation", "open")
+            EntFire("intro_door_trigger", "kill")
+            EntFire("intro_ap", "open")
+            local door1Trig = Entities.FindByClassnameNearest("trigger_multiple", Vector(0, 184, 320), 10)
+            EntFireByHandle(door1Trig, "kill", "", 0, null, null)
+            EntFire("office_1_door_1", "SetAnimation", "open")
 
             break
 
