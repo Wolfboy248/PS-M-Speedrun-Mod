@@ -255,10 +255,12 @@ srm.mapspawn <- function () {
             EntFire("AutoInstance1-door_model1", "Kill", 0, 1)
 
             // ending ele
-            // EntFire("lift_track_3")
             EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:startforward")
-            EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:SetMaxSpeed:800:0:1")
-            EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:SetSpeed:800:0:1")
+            EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:teleporttopathnode:lift_track_2:0:1")
+            local eleTrig = Entities.FindByClassnameNearest("trigger_once", Vector(20, 768, 48), 10)
+            EntFireByHandle(eleTrig, "AddOutput", "OnStartTouch end_fade:Fade::1.5:-1", 0, null, null)
+            EntFireByHandle(eleTrig, "AddOutput", "OnStartTouch end_command:Command:changelevel st_a3_concepts:2.5:-1", 0, null, null)
+            EntFireByHandle(eleTrig, "AddOutput", "OnStartTouch end_command:Command:disconnect:3:-1", 0, null, null)
             break
 
         default:
