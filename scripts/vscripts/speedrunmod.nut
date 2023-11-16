@@ -206,11 +206,27 @@ srm.mapspawn <- function () {
             EntFireByHandle(pumpDoorTrig, "AddOutput", "OnStartTouch pre_pump_control_room_left_door:setplaybackrate:50:0.01:-1", 0, null, null)
             EntFireByHandle(pumpDoorTrig, "AddOutput", "OnEndTouch pre_pump_control_room_left_door:setplaybackrate:50:0.01:-1", 0, null, null)
 
+            // big door time yayayyyayayayayayy vault_exit_relay
+            local beginningTrig = Entities.FindByClassnameNearest("trigger_once", Vector(5192, 2160, 448), 10)
+            EntFireByHandle(beginningTrig, "AddOutput", "OnStartTouch vault_exit_relay:trigger::0:1", 0, null, null)
+            EntFireByHandle(beginningTrig, "AddOutput", "OnStartTouch vault_door:setplaybackrate:20:0.1:1", 0, null, null)
+            EntFireByHandle(beginningTrig, "AddOutput", "OnStartTouch vault_exit_lift_down_relay:kill::0:1", 0, null, null)
+            EntFireByHandle(beginningTrig, "AddOutput", "OnStartTouch pumproom_lift_tracktrain:startforward::0:1", 0, null, null)
+            EntFireByHandle(beginningTrig, "AddOutput", "OnStartTouch pumproom_lift_tracktrain:setmaxspeed:200:0.11:1", 0, null, null)
+            EntFireByHandle(beginningTrig, "AddOutput", "OnStartTouch pumproom_lift_tracktrain:setspeed:200:0.2:1", 0, null, null)
+            EntFire("pumproom_lift_rope1", "SetParent", "pumproom_lift_rotate")
+            EntFire("pumproom_lift_rope2", "SetParent", "pumproom_lift_rotate")
+            EntFire("pumproom_lift_rope3", "SetParent", "pumproom_lift_rotate")
+            EntFire("pumproom_lift_rope4", "SetParent", "pumproom_lift_rotate")
+
             // open all of ne noors
             local buttonDoor1 = Entities.FindByClassnameNearest("func_button", Vector(1164, 1392, 308), 10)
             EntFireByHandle(buttonDoor1, "press", "", 0, null, null)
             local buttonDoor2 = Entities.FindByClassnameNearest("func_button", Vector(4712, 2160, 312.5), 10)
             EntFireByHandle(buttonDoor2, "press", "", 0, null, null)
+            EntFire("vault_exit_door", "setanimation", "vert_door_slow_opening", 0.3)
+            local lastTrig = Entities.FindByClassnameNearest("trigger_once", Vector(5212, 2140, 2497.13), 10)
+            EntFireByHandle(lastTrig, "kill", "", 0.3, null, null)
 
             break
 
@@ -237,7 +253,8 @@ srm.mapspawn <- function () {
             // ending ele
             // EntFire("lift_track_3")
             EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:startforward")
-            EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:SetSpeed", 3)
+            EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:SetMaxSpeed:800:0:1")
+            EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:SetSpeed:800:0:1")
             break
 
         default:
