@@ -32,6 +32,8 @@ srm.mapspawn <- function () {
             EntFire("Subway_TankTrain", "StartForward", "", 0.6)
             EntFire("chapter_subtitle_text", "Display", "", 3)
             EntFire("chapter_title_text", "Display", "", 3)
+            EntFire("chapter_subtitle_text", "kill", "", 4)
+            EntFire("chapter_title_text", "kill", "", 4)
 
             EntFire("lonewolf_loves_speedrunners_sound", "kill")
             EntFire("math_7", "add", "100")
@@ -149,8 +151,10 @@ srm.mapspawn <- function () {
             EntFire("gel_door", "AddOutput", "OnOpen walkway_door1:Open:0:-1")
             EntFire("gel_door", "AddOutput", "OnOpen walkway_door2:Open:0:-1")
 
-            local gelDoor = Entities.FindByClassnameNearest("prop_dynamic", Vector(-2184, -544, -192), 10)
-            EntFireByHandle(gelDoor, "kill", "", 0, null, null)
+            local gelDoor = Entities.FindByClassnameNearest("trigger_multiple", Vector(-2048, -528, -128), 10)
+            EntFireByHandle(gelDoor, "kill", "", 0.1, null, null)
+            EntFire("orange_pump_station_door_1-open", "trigger")
+            EntFire("orange_pump_station_door_1ap", "open")
 
             break
 
