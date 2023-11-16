@@ -166,6 +166,8 @@ srm.mapspawn <- function () {
 
             EntFire("lower_lift_button", "unlock", 0, 0.2)
             EntFire("lower_lift_button", "press", 0, 0.3)
+            EntFire("main_elevator", "setmaxspeed", 300, 0.4)
+            EntFire("main_elevator", "setspeed", 300, 0.5)
 
             EntFire("main_elevator_up_relay", "AddOutput", "OnTrigger main_elevator:SetMaxSpeed:300:0.1:1")
             EntFire("main_elevator_up_relay", "AddOutput", "OnTrigger main_elevator:SetSpeed:300:0.1:1")
@@ -176,6 +178,39 @@ srm.mapspawn <- function () {
             local door1Trig = Entities.FindByClassnameNearest("trigger_multiple", Vector(0, 184, 320), 10)
             EntFireByHandle(door1Trig, "kill", "", 0, null, null)
             EntFire("office_1_door_1", "SetAnimation", "open")
+
+            local firstAPTrig = Entities.FindByClassnameNearest("trigger_multiple", Vector(0, 104, 320), 10)
+            EntFireByHandle(firstAPTrig, "AddOutput", "OnStartTouch AutoInstance1-sd1_door2:setanimation:close:0:1", 0, null, null)
+
+            // cutscene with the smoke and fire and smoke
+            EntFire("AutoInstance1-sd1_door", "SetAnimation", "open")
+            local door2Trig = Entities.FindByClassnameNearest("trigger_multiple", Vector(-96, 968, 320), 10)
+            EntFireByHandle(door2Trig, "kill", "", 0, null, null)
+
+            // all of the fire shit
+            EntFire("o1_det_counter", "AddOutput", "OnAllTrue o1_door_fire:stop::0:1")
+            EntFire("o1_det_counter", "AddOutput", "OnAllTrue o1_fire_light:turnoff::0:1")
+            EntFire("o1_det_counter", "AddOutput", "OnAllTrue o1_door_1-open:trigger::0.2:1")
+            EntFire("o1_det_counter", "AddOutput", "OnAllTrue wc_door_1-door_move_up:open::1.2:1")
+            EntFire("o1_det_counter", "AddOutput", "OnAllTrue wc_door_1-door_move_down:open::1.2:1")
+
+            // after the fire cutscene
+            EntFire("Offices_2_Door_1", "SetAnimation", "open")
+            local door3Trig = Entities.FindByClassnameNearest("trigger_multiple", Vector(1408, 1816, 320), 10)
+            EntFireByHandle(door3Trig, "kill", "", 0, null, null)
+            EntFire("AutoInstance1-lever_hinge", "AddOutput", "OnFullyOpen AutoInstance1-sd1_door1:setplaybackrate:30:0.01:-1")
+
+            // open pump control doors faster
+            EntFire("Pre_Pump_Control_Room_Activate", "AddOutput", "OnTrigger Pre_Pump_Control_Room_Door_Trigger:Enable:0:-1")
+            local pumpDoorTrig = Entities.FindByClassnameNearest("trigger_multiple", Vector(3376, 2504, 312), 10)
+            EntFireByHandle(pumpDoorTrig, "AddOutput", "OnStartTouch pre_pump_control_room_left_door:setplaybackrate:50:0.01:-1", 0, null, null)
+            EntFireByHandle(pumpDoorTrig, "AddOutput", "OnEndTouch pre_pump_control_room_left_door:setplaybackrate:50:0.01:-1", 0, null, null)
+
+            // open all of ne noors
+            local buttonDoor1 = Entities.FindByClassnameNearest("func_button", Vector(1164, 1392, 308), 10)
+            EntFireByHandle(buttonDoor1, "press", "", 0, null, null)
+            local buttonDoor2 = Entities.FindByClassnameNearest("func_button", Vector(4712, 2160, 312.5), 10)
+            EntFireByHandle(buttonDoor2, "press", "", 0, null, null)
 
             break
 
