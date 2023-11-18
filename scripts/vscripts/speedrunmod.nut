@@ -12,7 +12,11 @@ srm.log <- function (...) {
 }
 
 srm.transitionTrigger <- function (trigger, map) {
-    EntFireByHandle(trigger, "AddOutput", "OnTrigger !self:RunScriptCode:SendToConsole(\"changelevel "+ (advanced ? "sp_" : "st_") + map+"\"):0:1", 0, null, null)
+    EntFireByHandle(trigger, "AddOutput", "OnStartTouch end_command:RunScriptCode:SendToConsole(\"changelevel "+ (advanced ? "sp_" : "st_") + map+"\"):1:1", 0, null, null)
+    EntFireByHandle(trigger, "AddOutput", "OnStartTouch end_fade:Fade::0:1", 0, null, null)
+}
+srm.transitionTrigger2 <- function (trigger, map) {
+    EntFireByHandle(trigger, "AddOutput", "OnStartTouch end_command:RunScriptCode:SendToConsole(\"changelevel "+ (advanced ? "sp_" : "st_") + map+"\"):2:1", 0, null, null)
 }
 
 srm.mapspawn <- function () {
@@ -90,7 +94,7 @@ srm.mapspawn <- function () {
 
         // CHAPTER 2
         case "garden_de":
-            FastOldApertureTransition(null, 2, "underbounce")
+            FastOldApertureTransition(null, 2, "a2_underbounce")
             srmFog()
 
             EntFire("bedroom_button", "unlock")
@@ -130,7 +134,7 @@ srm.mapspawn <- function () {
             underbounceTeleport()
             srmFog()
 
-            FastOldApertureTransition(1, 13, "once_upon")
+            FastOldApertureTransition(1, 13, "a2_once_upon")
 
             // kill the stupid ass lights
             local stupidLights = Entities.FindByName("logic_relay", "Power_On_Start_Relay")
@@ -139,7 +143,7 @@ srm.mapspawn <- function () {
             break
         
         case "once_upon":
-            FastOldApertureTransition(-1, -1, "past_power")
+            FastOldApertureTransition(-1, -1, "a2_past_power")
             srmFog()
 
             local startTrig = Entities.FindByClassnameNearest("trigger_once", Vector(3072, -1200, 1900), 10)
@@ -149,7 +153,7 @@ srm.mapspawn <- function () {
             break
 
         case "past_power":
-            FastOldApertureTransitionPASTPOWER(-1, -1, "ramp")
+            FastOldApertureTransitionPASTPOWER(-1, -1, "a2_ramp")
             srmFog()
 
             local startTrig = Entities.FindByClassnameNearest("trigger_once", Vector(1136, 272, 239), 10)
@@ -171,13 +175,13 @@ srm.mapspawn <- function () {
             break
 
         case "ramp":
-            FastOldApertureTransition(-1, -1, "firestorm")
+            FastOldApertureTransition(-1, -1, "a2_firestorm")
             srmFog()
 
             break
 
         case "firestorm":
-            FastOldApertureTransition(15, null, "firestorm")
+            FastOldApertureTransition(15, null, "a2_firestorm")
             srmFog()
 
             EntFire("r1_gate_1", "kill")
@@ -243,7 +247,7 @@ srm.mapspawn <- function () {
             // ending trigger
             local endTrig = Entities.FindByClassnameNearest("trigger_once", Vector(4976, 2160, 2497.13), 10)
             EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_fade:Fade::0:1", 0, null, null)
-            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_command:Command:changelevel st_a3_junkyard:2:1", 0, null, null)
+            srm.transitionTrigger2(endTrig, "a3_junkyard")
             EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_command:Command:disconnect:2.5:1", 0, null, null)
 
             // open all of ne noors
@@ -284,7 +288,7 @@ srm.mapspawn <- function () {
             EntFire("virgil_drop_trigger", "AddOutput", "OnTrigger lift_train:teleporttopathnode:lift_track_2:0:1")
             local eleTrig = Entities.FindByClassnameNearest("trigger_once", Vector(20, 768, 48), 10)
             EntFireByHandle(eleTrig, "AddOutput", "OnStartTouch end_fade:Fade::1.5:-1", 0, null, null)
-            EntFireByHandle(eleTrig, "AddOutput", "OnStartTouch end_command:Command:changelevel st_a3_concepts:2.5:-1", 0, null, null)
+            srm.transitionTrigger2(eleTrig, "a3_concepts")
             EntFireByHandle(eleTrig, "AddOutput", "OnStartTouch end_command:Command:disconnect:3:-1", 0, null, null)
             break
 
@@ -413,7 +417,7 @@ function FastOldApertureTransition(idin, idout, mapNext){
     if(idout<0){
       elename = "exit_elevator-exit_lift_doortop_movelinear"
     }
-    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:changelevel st_a2_" + nextMap + ":1.8:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed !self:RunScriptCode:SendToConsole(\"changelevel "+ (advanced ? "sp_" : "st_") + nextMap+"\"):2:1")
     EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
     EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
   }
@@ -447,7 +451,7 @@ function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
 
     EntFire(elename, "AddOutput", "OnFullyClosed "+elename2+":StartForward::0:1")
     EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
-    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:1.5:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
     EntFire(elename2, "SetMaxSpeed", 250)
 
     //make end eles already opened
@@ -462,9 +466,9 @@ function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
     if(idout<0){
       elename = "autoinstance1-exit_elevator-exit_lift_doortop_movelinear"
     }
-    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:changelevel st_a2_" + nextMap + ":1:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed !self:RunScriptCode:SendToConsole(\"changelevel "+ (advanced ? "sp_" : "st_") + nextMap+"\"):2:1")
     EntFire(elename, "AddOutput", "OnFullyClosed end_fade:Fade::0:1")
-    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:1.5:1")
+    EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
   }
 
   
