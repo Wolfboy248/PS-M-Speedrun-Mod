@@ -308,9 +308,22 @@ srm.mapspawn <- function () {
           EntFire("autoinstance1-elevator_1_top_path_3", "AddOutput", "OnPass autoinstance1-elevator_1:setmaxspeed:300:0.1:1")
           EntFire("autoinstance1-elevator_1_top_path_3", "AddOutput", "OnPass autoinstance1-elevator_1:setspeed:300:0.103:1")
 
+          // chamber
+          EntFire("@entry_door", "open", "", 3)
+
+          // doors
+          EntFire("test_2_door", "open")
+          EntFire("exit_door", "open")
+          EntFire("test_2_door_araeportal", "open")
+
           // add a fade for the start
           EntFire("end_command", "Command", "ent_fire end_fade fadereverse")
           EntFire("end_command", "Command", "fadein", 0.3)
+
+          // ending ele
+          local endEleTrig = Entities.FindByClassnameNearest("trigger_once", Vector(1632, 248, 64), 10)
+          EntFireByHandle(endEleTrig, "kill", "", 0, null, null)
+          EntFire("InstanceAuto9-logic_source_elevator_door_open", "trigger")
           break
 
         default:
