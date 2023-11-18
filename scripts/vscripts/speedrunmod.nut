@@ -16,6 +16,7 @@ srm.transitionTrigger <- function (trigger, map) {
 }
 
 srm.mapspawn <- function () {
+
     switch (mapName) {
         // CHAPTER 1
         case "tramride":
@@ -156,8 +157,8 @@ srm.mapspawn <- function () {
             EntFire("orange_pump_station_door_1-open", "trigger")
             EntFire("orange_pump_station_door_1ap", "open")
 
+            EntFire("orange_gel_door", "AddOutput", "OnOpen gel_1:start::0:0")
             break
-
         case "ramp":
             FastOldApertureTransition(-1, -1, "firestorm")
 
@@ -232,6 +233,18 @@ srm.mapspawn <- function () {
             local lastTrig = Entities.FindByClassnameNearest("trigger_once", Vector(5212, 2140, 2497.13), 10)
             EntFireByHandle(lastTrig, "kill", "", 0.3, null, null)
 
+            //no fire
+            EntFire("intro_water_fire", "kill");
+            EntFire("intro_water", "kill");
+            EntFire("intro_door_fire_hurt", "kill");
+
+            //fast Fade
+            EntFire("vault_exit_door", "AddOutput", "OnAnimationBegun vault_exit_door:setplaybackrate:5.0:0.03:1")
+            local endTrig = Entities.FindByClassnameNearest("trigger_once", (4976, 2160, 2497.13), 5)
+            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_command:command:disconnect:0:1", 0,null, null)
+            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_command:command:changelevel st_a3_junkyard:0:1", 0,null, null)
+            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch vault_exit_door:setanimation:vert_door_closing:0:1", 0,null, null)
+            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_fade:fade::0:1", 0,null, null)
             break
 
         case "junkyard":
