@@ -16,10 +16,10 @@ srm.transitionTrigger <- function (trigger, map) {
 }
 
 srm.mapspawn <- function () {
-
     switch (mapName) {
         // CHAPTER 1
         case "tramride":
+            srmFog()
             local auto = Entities.FindByClassnameNearest("logic_auto", Vector(-6096, -6152, -112), 10)
             EntFireByHandle(auto, "disable", "", 0, null, null)
             EntFire("StartFade", "FadeReverse", "")
@@ -47,6 +47,7 @@ srm.mapspawn <- function () {
             break
 
         case "mel_intro":
+            srmFog()
             EntFire("autoinstance1-tram_subway_model", "setplaybackrate", 100, 0.2)
             EntFire("lift_door", "kill") // couldnt change speed for some reason
             EntFire("lift_gate_1", "setspeed", 350, 1)
@@ -63,6 +64,7 @@ srm.mapspawn <- function () {
             break
 
         case "garden":
+            srmFog()
             EntFire("lift_door", "kill")
             EntFire("autoinstance1-l_e_gr_door", "open", 0, 0.2)
             EntFire("autoinstance1-l_e_gl_door", "open", 0, 0.2)
@@ -82,11 +84,14 @@ srm.mapspawn <- function () {
 
             EntFire("sleep_button", "unlock", 0, 1)
             EntFire("open_bed_rl", "trigger", 0, 1)
+
+            EntFire("sleep_button", "AddOutput", "OnPressed end_command:Command:stopvideos:0.03:1")
             break
 
         // CHAPTER 2
         case "garden_de":
             FastOldApertureTransition(null, 2, "underbounce")
+            srmFog()
 
             EntFire("bedroom_button", "unlock")
             EntFire("bedroom_button", "press")
@@ -123,6 +128,7 @@ srm.mapspawn <- function () {
 
         case "underbounce":
             underbounceTeleport()
+            srmFog()
 
             FastOldApertureTransition(1, 13, "once_upon")
 
@@ -134,6 +140,7 @@ srm.mapspawn <- function () {
         
         case "once_upon":
             FastOldApertureTransition(-1, -1, "past_power")
+            srmFog()
 
             local startTrig = Entities.FindByClassnameNearest("trigger_once", Vector(3072, -1200, 1900), 10)
 
@@ -143,6 +150,7 @@ srm.mapspawn <- function () {
 
         case "past_power":
             FastOldApertureTransitionPASTPOWER(-1, -1, "ramp")
+            srmFog()
 
             local startTrig = Entities.FindByClassnameNearest("trigger_once", Vector(1136, 272, 239), 10)
             EntFireByHandle(startTrig, "AddOutput", "OnStartTouch room_1_door_0-door_prop:setplaybackrate:4:0.1:-1", 0, null, null)
@@ -152,22 +160,30 @@ srm.mapspawn <- function () {
             EntFire("gel_door", "AddOutput", "OnOpen walkway_door1:Open:0:-1")
             EntFire("gel_door", "AddOutput", "OnOpen walkway_door2:Open:0:-1")
 
+            // fast gel
+            EntFire("orange_gel_door", "AddOutput", "OnOpen gel_1:start::0:1")
+
             local gelDoor = Entities.FindByClassnameNearest("trigger_multiple", Vector(-2048, -528, -128), 10)
             EntFireByHandle(gelDoor, "kill", "", 0.1, null, null)
             EntFire("orange_pump_station_door_1-open", "trigger")
             EntFire("orange_pump_station_door_1ap", "open")
 
-            EntFire("orange_gel_door", "AddOutput", "OnOpen gel_1:start::0:0")
             break
+
         case "ramp":
             FastOldApertureTransition(-1, -1, "firestorm")
+            srmFog()
 
             break
 
         case "firestorm":
             FastOldApertureTransition(15, null, "firestorm")
+            srmFog()
 
             EntFire("r1_gate_1", "kill")
+
+            // STUPID TRIGGER PUSH WHY THE FUCK DO YOU EXIST!!!!!
+            EntFire("intro_push", "Kill")
 
             EntFire("lower_lift_button", "unlock", 0, 0.2)
             EntFire("lower_lift_button", "press", 0, 0.3)
@@ -224,6 +240,12 @@ srm.mapspawn <- function () {
             EntFire("pumproom_lift_rope3", "SetParent", "pumproom_lift_rotate")
             EntFire("pumproom_lift_rope4", "SetParent", "pumproom_lift_rotate")
 
+            // ending trigger
+            local endTrig = Entities.FindByClassnameNearest("trigger_once", Vector(4976, 2160, 2497.13), 10)
+            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_fade:Fade::0:1", 0, null, null)
+            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_command:Command:changelevel st_a3_junkyard:2:1", 0, null, null)
+            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_command:Command:disconnect:2.5:1", 0, null, null)
+
             // open all of ne noors
             local buttonDoor1 = Entities.FindByClassnameNearest("func_button", Vector(1164, 1392, 308), 10)
             EntFireByHandle(buttonDoor1, "press", "", 0, null, null)
@@ -233,21 +255,11 @@ srm.mapspawn <- function () {
             local lastTrig = Entities.FindByClassnameNearest("trigger_once", Vector(5212, 2140, 2497.13), 10)
             EntFireByHandle(lastTrig, "kill", "", 0.3, null, null)
 
-            //no fire
-            EntFire("intro_water_fire", "kill");
-            EntFire("intro_water", "kill");
-            EntFire("intro_door_fire_hurt", "kill");
-
-            //fast Fade
-            EntFire("vault_exit_door", "AddOutput", "OnAnimationBegun vault_exit_door:setplaybackrate:5.0:0.03:1")
-            local endTrig = Entities.FindByClassnameNearest("trigger_once", (4976, 2160, 2497.13), 5)
-            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_command:command:disconnect:0:1", 0,null, null)
-            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_command:command:changelevel st_a3_junkyard:0:1", 0,null, null)
-            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch vault_exit_door:setanimation:vert_door_closing:0:1", 0,null, null)
-            EntFireByHandle(endTrig, "AddOutput", "OnStartTouch end_fade:fade::0:1", 0,null, null)
             break
 
         case "junkyard":
+            srmFog()
+            
             // beginning door button to open door (crazy)
             EntFire("func_button", "Press")
             // open ne noor faster
@@ -276,6 +288,31 @@ srm.mapspawn <- function () {
             EntFireByHandle(eleTrig, "AddOutput", "OnStartTouch end_command:Command:disconnect:3:-1", 0, null, null)
             break
 
+        case "concepts":
+          srmFog()
+          EntFire("env_fog_controller", "SetEndDist", "3000")
+
+          // FUCKING STUPID START ELEVATOR!!!! DO NOT TOUCH!!!!!!! (IT SUCKS)
+          local startEle = Entities.FindByClassnameNearest("func_tracktrain", Vector(-192, 352, -1552), 10)
+          local OMGPLAYER = Entities.FindByClassnameNearest("player", Vector(0, 0, 0), 10000)
+          EntFireByHandle(OMGPLAYER, "setlocalorigin", "581 352 -500", 0.25, null, null)
+          startEle.SetOrigin(Vector(581, 352, -450))
+          EntFire("autoinstance1-elevator_1_top_path_4", "setlocalorigin", "581 352 -450")
+          EntFire("autoinstance1-elevator_1_top_path_2", "setlocalorigin", "581 352 -450")
+          EntFire("autoinstance1-elevator_1_top_path_1", "setlocalorigin", "581 352 -450")
+          EntFire("autoinstance1-elevator_1_top_path_3", "setlocalorigin", "581 352 -450")
+          EntFire("autoinstance1-elevator_1_top_path_1", "AddOutput", "OnPass autoinstance1-elevator_1:startforward::0.03:1")
+          EntFire("autoinstance1-elevator_1_top_path_3", "AddOutput", "OnPass autoinstance1-elevator_1:startforward::0.03:1")
+          EntFire("autoinstance1-elevator_1_top_path_2", "AddOutput", "OnPass autoinstance1-elevator_1:startforward::0.03:1")
+          EntFire("autoinstance1-elevator_1_top_path_4", "AddOutput", "OnPass autoinstance1-elevator_1:startforward::0.03:1")
+          EntFire("autoinstance1-elevator_1_top_path_3", "AddOutput", "OnPass autoinstance1-elevator_1:setmaxspeed:300:0.1:1")
+          EntFire("autoinstance1-elevator_1_top_path_3", "AddOutput", "OnPass autoinstance1-elevator_1:setspeed:300:0.103:1")
+
+          // add a fade for the start
+          EntFire("end_command", "Command", "ent_fire end_fade fadereverse")
+          EntFire("end_command", "Command", "fadein", 0.3)
+          break
+
         default:
             break;
     }
@@ -285,6 +322,13 @@ function melgunTeleport() {
   player.SetVelocity(Vector(0, 0, 0))
   player.SetAngles(0.86, -147.77, 0.00)
   player.SetOrigin(Vector(2865.38, 1665.63, 96.03))
+}
+
+function srmFog() {
+  EntFire("env_fog_controller", "SetColorSecondary", "70 40 0")
+  EntFire("env_fog_controller", "SetColor", "70 40 0")
+  EntFire("env_fog_controller", "SetStartDist", "-50")
+  EntFire("env_fog_controller", "SetEndDist", "7000")
 }
 
 function underbounceTeleport() {
