@@ -327,7 +327,16 @@ srm.mapspawn <- function () {
           // ending ele
           local endEleTrig = Entities.FindByClassnameNearest("trigger_once", Vector(1632, 248, 64), 10)
           EntFireByHandle(endEleTrig, "kill", "", 0, null, null)
+          EntFire("InstanceAuto9-close", "AddOutput", "OnTrigger !self:RunScriptCode:SendToConsole(\"changelevel "+ (advanced ? "sp_" : "st_") + "a3_paint_fling"+"\"):2.5:1")
+          EntFire("InstanceAuto9-close", "AddOutput", "OnTrigger end_fade:Fade::0:1")
           EntFire("InstanceAuto9-logic_source_elevator_door_open", "trigger")
+          break
+
+        case "paint_fling":
+          srmFog()
+          FastNewApertureTransitions(52, 34, "a3_faith_plate")
+          EntFire("env_fog_controller", "SetEndDist", "3000")
+
           break
 
         default:
@@ -442,7 +451,6 @@ function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
     local elename = "autoinstance1-exit_elevator-exit_lift_doortop_movelinear"
     local elename2 = "autoinstance1-exit_elevator-exit_lift_train"
     local elename3 = "autoinstance1-exit_elevator-exit_lift_doorbottom_movelinear"
-    printl(elename3)
     if(idout<0){
       elename = "autoinstance1-exit_elevator-exit_lift_doortop_movelinear"
       elename2 = "autoinstance1-exit_elevator-exit_lift_train"
@@ -484,4 +492,47 @@ function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
     EntFire(elename2, "inpass", 0, 0.7)
   }
   
+}
+
+function FastNewApertureTransitions(idin, idout, mapNext) {
+  if(idout){
+    local elename = "instanceauto"+idout+"-close"
+    local elename2 = "instanceauto"+idout+"-elevator_1"
+    if(idout<0){
+      elename = ""
+    }
+
+    EntFire(elename, "AddOutput", "OnTrigger "+elename2+":StartForward::0.8:1")
+    // EntFire(elename, "AddOutput", "OnTrigger end_command:Command:disconnect:2.5:1")
+    EntFire(elename2, "SetMaxSpeed", 250)
+  }
+
+  if(mapNext){
+    local elename = "instanceauto"+idout+"-close"
+    local nextMap = mapNext
+
+    if(idout<0){
+      elename = ""
+    }
+    // EntFire(elename, "AddOutput", "OnTrigger end_command:Command:changelevel "+ (advanced ? "sp_" : "st_") + nextMap+":2:1")
+    EntFire(elename, "AddOutput", "OnTrigger end_fade:Fade::0.8:1")
+    // EntFire(elename, "AddOutput", "OnTrigger end_command:Command:disconnect:2.5:1")
+  }
+
+  if(idin){
+    local elename = "InstanceAuto"+idin+"-elevator_1"
+    local elename2 = Entities.FindByName("trigger_once", "InstanceAuto"+idin+"-source_elevator_door_open_trigger")
+    if(idin<0){
+      elename = ""
+      elename2 = ""
+    }
+    EntFire(elename, "SetMaxSpeed", 450)
+    EntFire(elename, "SetSpeed", 450, 0.1)
+    EntFireByHandle(elename2, "AddOutput", "OnStartTouch instanceauto52-open:trigger::0:1", 0, null, null)
+    EntFireByHandle(elename2, "AddOutput", "OnStartTouch instanceauto"+idin+"-open:kill::0.3:1", 0, null, null)
+
+    // local trigPos = elename2.GetOrigin();
+    // elename2.SetOrigin(Vector(trigPos.x, trigPos.y, trigPos.z + 300))
+
+  }
 }
