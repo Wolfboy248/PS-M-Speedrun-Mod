@@ -399,6 +399,24 @@ srm.mapspawn <- function () {
           FastNewApertureTransitions(-1, 39)
           srmFog()
 
+          // starting cutscene (likely equally as bad as concepts)
+          local player = Entities.FindByClassnameNearest("player", Vector(0, 0, 0), 10000)
+          EntFire("intro_elevator_train", "setlocalorigin", "-1211 -3296 -400")
+          EntFireByHandle(player, "setlocalorigin", "-1211 -3296 -460", 0.1, null, null)
+          local deathTrig = Entities.FindByClassnameNearest("trigger_hurt", Vector(-904, -3232, -264), 10)
+          EntFireByHandle(deathTrig, "disable", "", 0, null, null)
+          EntFireByHandle(deathTrig, "enable", "", 4, null, null)
+          EntFire("top_path_1", "setlocalorigin", "-1211 -3296 -400")
+          EntFire("top_path_2", "setlocalorigin", "-1211 -3296 -400")
+          EntFire("top_path_3", "setlocalorigin", "-1211 -3296 -400")
+          EntFire("top_path_4", "setlocalorigin", "-1211 -3296 -400")
+          EntFire("top_path_4", "AddOutput", "OnPass intro_elevator_train:setmaxspeed:350:0.2:1")
+          EntFire("top_path_4", "AddOutput", "OnPass intro_elevator_train:setspeed:350:0.3:1")
+          EntFire("top_path_7", "setlocalorigin", "-1211 -3296 -400")
+          EntFire("top_path_5", "setlocalorigin", "-1211 -3296 0")
+          EntFire("top_path_5", "AddOutput", "OnPass intro_elevator:setanimation:dooropen:0.2:1")
+          player.SetOrigin(Vector(-1211, -3296, -400 - 50))
+
           break
 
         case "tb_over_goo":
