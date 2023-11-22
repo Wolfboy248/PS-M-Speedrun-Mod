@@ -334,8 +334,15 @@ srm.mapspawn <- function () {
 
         case "paint_fling":
           srmFog()
-          FastNewApertureTransitions(52, 34, "a3_faith_plate")
+          FastNewApertureTransitions(52, 34)
           EntFire("env_fog_controller", "SetEndDist", "3000")
+
+          break
+
+        case "faith_plate":
+          FastNewApertureTransitions(53, 2) // we're gonna need to do some custom shit for the ending ele cuz it sucks
+          srmFog()
+          EntFire("env_fog_controller", "SetEndDist", "5000")
 
           break
 
@@ -494,7 +501,7 @@ function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
   
 }
 
-function FastNewApertureTransitions(idin, idout, mapNext) {
+function FastNewApertureTransitions(idin, idout) {
   if(idout){
     local elename = "instanceauto"+idout+"-close"
     local elename2 = "instanceauto"+idout+"-elevator_1"
@@ -503,20 +510,13 @@ function FastNewApertureTransitions(idin, idout, mapNext) {
     }
 
     EntFire(elename, "AddOutput", "OnTrigger "+elename2+":StartForward::0.8:1")
-    // EntFire(elename, "AddOutput", "OnTrigger end_command:Command:disconnect:2.5:1")
     EntFire(elename2, "SetMaxSpeed", 250)
-  }
 
-  if(mapNext){
-    local elename = "instanceauto"+idout+"-close"
-    local nextMap = mapNext
-
-    if(idout<0){
-      elename = ""
-    }
-    // EntFire(elename, "AddOutput", "OnTrigger end_command:Command:changelevel "+ (advanced ? "sp_" : "st_") + nextMap+":2:1")
-    EntFire(elename, "AddOutput", "OnTrigger end_fade:Fade::0.8:1")
-    // EntFire(elename, "AddOutput", "OnTrigger end_command:Command:disconnect:2.5:1")
+    // open ending ele from start of map and killing last trigger
+    EntFire("InstanceAuto"+idout+"-logic_source_elevator_door_open", "trigger")
+    EntFire("InstanceAuto"+idout+"-signs_on", "trigger")
+    EntFire("instanceauto"+idout+"-source_elevator_door_open_trigger", "kill")
+    EntFire(elename, "AddOutput", "OnTrigger InstanceAuto"+idout+"-elevator_1_player_teleport:RunScriptCode:ReadyForTransition():1.3:1")
   }
 
   if(idin){
@@ -528,7 +528,7 @@ function FastNewApertureTransitions(idin, idout, mapNext) {
     }
     EntFire(elename, "SetMaxSpeed", 450)
     EntFire(elename, "SetSpeed", 450, 0.1)
-    EntFireByHandle(elename2, "AddOutput", "OnStartTouch instanceauto52-open:trigger::0:1", 0, null, null)
+    EntFireByHandle(elename2, "AddOutput", "OnStartTouch instanceauto"+idin+"-open:trigger::0:1", 0, null, null)
     EntFireByHandle(elename2, "AddOutput", "OnStartTouch instanceauto"+idin+"-open:kill::0.3:1", 0, null, null)
 
     // local trigPos = elename2.GetOrigin();
