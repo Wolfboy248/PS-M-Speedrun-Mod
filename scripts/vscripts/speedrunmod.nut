@@ -337,12 +337,51 @@ srm.mapspawn <- function () {
           FastNewApertureTransitions(52, 34)
           EntFire("env_fog_controller", "SetEndDist", "3000")
 
+          EntFire("Entrance_Door", "open", "", 3)
+          local betweenChambersTrig = Entities.FindByClassnameNearest("trigger_once", Vector(-664, 832.01, 256), 10)
+          EntFireByHandle(betweenChambersTrig, "AddOutput", "OnStartTouch Entry_door_2:open::0:1", 0, null, null)
+
           break
 
         case "faith_plate":
-          FastNewApertureTransitions(53, 2) // we're gonna need to do some custom shit for the ending ele cuz it sucks
+          FastNewApertureTransitions(53, 2)
           srmFog()
           EntFire("env_fog_controller", "SetEndDist", "5000")
+
+          EntFire("Entry_Door", "open", "", 3)
+          EntFire("entry_door_areaportal", "open", "", 3)
+          EntFire("cooridor_1_floor_panels_open_relay", "trigger")
+          EntFire("cooridor_1_floor_panels_open_relay", "kill", 0.3)
+          EntFire("BTS_1_Vert_Door_1", "setanimation", "vert_door_opening")
+          EntFire("BTS_1_Vert_Door_2", "setanimation", "vert_door_opening")
+          local trig1 = Entities.FindByClassnameNearest("trigger_once", Vector(736, 3904, 148), 10)
+          EntFireByHandle(trig1, "kill", "", 0, null, null)
+          local trig2 = Entities.FindByClassnameNearest("trigger_once", Vector(736, 4296, 192) 10)
+          EntFireByHandle(trig2, "AddOutput", "OnStartTouch bts_1_areaportal:open::0:1", 0, null, null)
+          local trig3 = Entities.FindByClassnameNearest("trigger_once", Vector(752, 4576, 200), 10)
+          EntFireByHandle(trig3, "kill", "", 0, null, null)
+          EntFire("let_virgil_help_rl", "trigger")
+
+          // ending ele
+          EntFire("cs_virgil_126", "kill")
+          EntFire("AutoInstance2-logic_source_elevator_door_open", "trigger")
+          EntFire("autoinstance2-close", "AddOutput", "OnTrigger end_fade:Fade::1.2:1")
+          EntFire("autoinstance2-close", "AddOutput", "OnTrigger end_command:Command:disconnect:4:1")
+          EntFire("autoinstance2-close", "AddOutput", "OnTrigger end_command:Command:changelevel "+ (advanced ? "sp_" : "st_") + "a3_transition:3:1")
+
+          break
+
+        case "transition":
+          FastNewApertureTransitions(40, 0)
+          srmFog()
+
+          EntFire("@entry_door", "open", "", 3)
+          local trig1 = Entities.FindByClassnameNearest("trigger_multiple", Vector(664, -3072, 448), 10)
+          EntFireByHandle(trig1, "kill", "", 0, null, null)
+          EntFire("obroom_door", "setanimation", "open")
+          // enable the observatory room portal placement helper (not in use)
+          // EntFire("obs_room_helper", "enable")
+          EntFire("tc_entry_door", "open")
 
           break
 
