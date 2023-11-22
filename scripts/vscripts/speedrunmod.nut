@@ -372,7 +372,7 @@ srm.mapspawn <- function () {
           break
 
         case "transition":
-          FastNewApertureTransitions(40, 0)
+          FastNewApertureTransitions(40, 28)
           srmFog()
 
           EntFire("@entry_door", "open", "", 3)
@@ -383,7 +383,38 @@ srm.mapspawn <- function () {
           // EntFire("obs_room_helper", "enable")
           EntFire("tc_entry_door", "open")
 
+          EntFire("doorzed-door_move_up", "setspeed", "500")
+          EntFire("doorzed-door_move_down", "setspeed", "500")
+
+          local door1 = Entities.FindByClassnameNearest("func_button", Vector(3200, 110, 504), 10)
+          EntFireByHandle(door1, "press", "", 0, null, null)
+          EntFire("bts_bipart_door_2-door_move_up", "setspeed", "500")
+          EntFire("bts_bipart_door_2-door_move_down ", "setspeed", "500")
+          EntFire("breaker_lever", "AddOutput", "OnPressed oa_entry_darkness:disable::0:1")
+          EntFire("oa_glare", "kill")
+
           break
+
+        case "overgrown":
+          FastNewApertureTransitions(-1, 39)
+          srmFog()
+
+          break
+
+        case "tb_over_goo":
+          FastNewApertureTransitions(101, 32)
+          srmFog()
+
+          break
+
+        case "two_of_a_kind":
+          FastNewApertureTransitions(-1, 24)
+          srmFog()
+
+          break
+
+        case "destroyed":
+          FastNewApertureTransitions(-1, null)
 
         default:
             break;
@@ -562,13 +593,23 @@ function FastNewApertureTransitions(idin, idout) {
     local elename = "InstanceAuto"+idin+"-elevator_1"
     local elename2 = Entities.FindByName("trigger_once", "InstanceAuto"+idin+"-source_elevator_door_open_trigger")
     if(idin<0){
-      elename = ""
-      elename2 = ""
+      elename = "arrival_logic-elevator_1"
+      elename2 = "arrival_logic-source_elevator_door_open_trigger"
+    }
+    if(idin>100){
+      elename = "arrival_elevator-elevator_1"
+      elename2 = "arrival_elevator-source_elevator_door_open_trigger"
     }
     EntFire(elename, "SetMaxSpeed", 450)
     EntFire(elename, "SetSpeed", 450, 0.1)
     EntFireByHandle(elename2, "AddOutput", "OnStartTouch instanceauto"+idin+"-open:trigger::0:1", 0, null, null)
     EntFireByHandle(elename2, "AddOutput", "OnStartTouch instanceauto"+idin+"-open:kill::0.3:1", 0, null, null)
+    EntFireByHandle(elename2, "AddOutput", "OnStartTouch arrival_logic-open:trigger::1:1", 0, null, null)
+    EntFireByHandle(elename2, "AddOutput", "OnStartTouch arrival_logic-open:kill::0.3:1", 0, null, null)
+    EntFire("arrival_logic-open", "trigger", "", 1.6)
+    EntFire("arrival_logic-open", "kill", "", 1.7)
+    EntFire("arrival_elevator-open", "trigger", "", 1.6)
+    EntFire("arrival_elevator-open", "kill", "", 1.7)
 
     // local trigPos = elename2.GetOrigin();
     // elename2.SetOrigin(Vector(trigPos.x, trigPos.y, trigPos.z + 300))
