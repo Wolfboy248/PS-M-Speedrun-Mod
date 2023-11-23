@@ -141,7 +141,7 @@ srm.mapspawn <- function () {
             EntFireByHandle(stupidLights, "kill", "", 0, null, null)
 
             break
-        
+
         case "once_upon":
             FastOldApertureTransition(-1, -1, "a2_past_power")
             srmFog()
@@ -149,7 +149,7 @@ srm.mapspawn <- function () {
             local startTrig = Entities.FindByClassnameNearest("trigger_once", Vector(3072, -1200, 1900), 10)
 
             EntFireByHandle(startTrig, "AddOutput", "OnStartTouch entry_door-door_prop:setplaybackrate:3:0.1:-1", 0, null, null)
-            
+
             break
 
         case "past_power":
@@ -263,7 +263,7 @@ srm.mapspawn <- function () {
 
         case "junkyard":
             srmFog()
-            
+
             // beginning door button to open door (crazy)
             EntFire("func_button", "Press")
             // open ne noor faster
@@ -417,11 +417,46 @@ srm.mapspawn <- function () {
           EntFire("top_path_5", "AddOutput", "OnPass intro_elevator:setanimation:dooropen:0.2:1")
           player.SetOrigin(Vector(-1211, -3296, -400 - 50))
 
+          // doing this stupid ahh trigger on map load
+          local startTrig = Entities.FindByClassnameNearest("trigger_once", Vector(-576, -2898, -65.13), 10)
+          EntFireByHandle(startTrig, "kill", "", 0, null, null)
+          EntFire("intro_vert_door", "setanimation", "vert_door_opening")
+          EntFire("intro_ap", "open")
+          EntFire("skylight_1", "turnon")
+          EntFire("office_ap", "open")
+          EntFire("intro_light_flicker_timer", "Enable")
+          EntFire("office_steam_noise", "playsound")
+          EntFire("office_steam", "start")
+
+          // office
+          local door1 = Entities.FindByClassnameNearest("func_button", Vector(-350, -2228, 56), 10)
+          EntFireByHandle(door1, "press", "", 0, null, null)
+          local trig1 = Entities.FindByClassnameNearest("trigger_multiple", Vector(-352, -1816, 64), 10)
+          EntFireByHandle(trig1, "kill", "", 0, null, null)
+          EntFire("AutoInstance1-sd1_door1", "setanimation", "open")
+          EntFire("block_button", "enablemotion")
+          EntFire("office_button", "unlock")
+          EntFire("office_button", "AddOutput", "OnPressed office_escape_door:setplaybackrate:300:0.03:1")
+          local trig2 = Entities.FindByClassnameNearest("trigger_once", Vector(336, -1424, 63.99), 10)
+          EntFireByHandle(trig2, "kill", "", 0, null, null)
+          EntFire("intro_lift_entrance", "setanimation", "vert_door_opening")
+          EntFire("intro_lift_ap", "open")
+
+          // chamber(s)
+          EntFire("door_5", "open")
+
           break
 
         case "tb_over_goo":
           FastNewApertureTransitions(101, 32)
           srmFog()
+          EntFire("env_fog_controller", "SetEndDist", "5000")
+
+          EntFire("Entrance_door", "open", "", 2.5)
+
+          // chamber(s)
+          EntFire("r2_entrance_door", "open")
+
 
           break
 
@@ -429,10 +464,22 @@ srm.mapspawn <- function () {
           FastNewApertureTransitions(-1, 24)
           srmFog()
 
+          EntFire("r1_entrance_door", "open", "", 2.5)
+
+          // chamber(s)
+          EntFire("r2_entrance_door", "open")
+
           break
 
         case "destroyed":
+          FastNewApertureTransitions(-1, -1)
+          srmFog()
+
+        case "factory":
           FastNewApertureTransitions(-1, null)
+          srmFog()
+
+          break
 
         default:
             break;
@@ -481,7 +528,7 @@ function underbounceTeleport() {
   if (door2 != null) {
     EntFireByHandle(door2, "kill", "", 1, null, null)
   }
-  
+
 
   local startEle = Entities.FindByClassnameNearest("func_tracktrain", Vector(-552, -5824, -192) 10)
   startEle.SetOrigin(Vector(-552, -192, -50))
@@ -526,7 +573,7 @@ function FastOldApertureTransition(idin, idout, mapNext){
     EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
   }
 
-  
+
   if(idin){
     local elename = "InstanceAuto"+idin+"-entrance_lift_train"
     local elename2 = "InstanceAuto"+idin+"-entrance_lift_train_path_2"
@@ -538,7 +585,7 @@ function FastOldApertureTransition(idin, idout, mapNext){
     EntFire(elename, "SetSpeed", 250, 0.1)
     EntFire(elename2, "inpass", 0, 0.7)
   }
-  
+
 }
 
 function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
@@ -574,7 +621,7 @@ function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
     EntFire(elename, "AddOutput", "OnFullyClosed end_command:Command:disconnect:2.5:1")
   }
 
-  
+
   if(idin){
     local elename = "InstanceAuto"+idin+"-entrance_lift_train"
     local elename2 = "InstanceAuto"+idin+"-entrance_lift_train_path_2"
@@ -586,15 +633,18 @@ function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
     EntFire(elename, "SetSpeed", 250, 0.1)
     EntFire(elename2, "inpass", 0, 0.7)
   }
-  
+
 }
 
 function FastNewApertureTransitions(idin, idout) {
   if(idout){
     local elename = "instanceauto"+idout+"-close"
     local elename2 = "instanceauto"+idout+"-elevator_1"
+    local elename3 = "departure_logic-logic_source_elevator_door_open"
     if(idout<0){
-      elename = ""
+      elename = "departure_logic-close"
+      elename2 = "departure_logic-elevator_1"
+      elename3 = "departure_logic-logic_source_elevator_door_open"
     }
 
     EntFire(elename, "AddOutput", "OnTrigger "+elename2+":StartForward::0.8:1")
@@ -602,9 +652,12 @@ function FastNewApertureTransitions(idin, idout) {
 
     // open ending ele from start of map and killing last trigger
     EntFire("InstanceAuto"+idout+"-logic_source_elevator_door_open", "trigger")
+    EntFire("departure_logic-logic_source_elevator_door_open", "trigger")
     EntFire("InstanceAuto"+idout+"-signs_on", "trigger")
     EntFire("instanceauto"+idout+"-source_elevator_door_open_trigger", "kill")
+    EntFire("departure_logic-logic_source_elevator_door_open", "kill")
     EntFire(elename, "AddOutput", "OnTrigger InstanceAuto"+idout+"-elevator_1_player_teleport:RunScriptCode:ReadyForTransition():1.3:1")
+    EntFire(elename, "AddOutput", "OnTrigger departure_logic-elevator_1_player_teleport:RunScriptCode:ReadyForTransition():1.3:1")
   }
 
   if(idin){
