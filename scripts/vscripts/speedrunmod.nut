@@ -417,6 +417,10 @@ srm.mapspawn <- function () {
           EntFire("top_path_5", "AddOutput", "OnPass intro_elevator:setanimation:dooropen:0.2:1")
           player.SetOrigin(Vector(-1211, -3296, -400 - 50))
 
+          // Fade for the start cuz its shit
+          EntFire("end_command", "Command", "ent_fire end_fade fadereverse")
+          EntFire("end_command", "Command", "fadein", 0.3)
+
           // doing this stupid ahh trigger on map load
           local startTrig = Entities.FindByClassnameNearest("trigger_once", Vector(-576, -2898, -65.13), 10)
           EntFireByHandle(startTrig, "kill", "", 0, null, null)
@@ -444,13 +448,14 @@ srm.mapspawn <- function () {
 
           // chamber(s)
           EntFire("door_5", "open")
+          EntFire("@entry_door1", "open")
 
           break
 
         case "tb_over_goo":
           FastNewApertureTransitions(101, 32)
           srmFog()
-          EntFire("env_fog_controller", "SetEndDist", "5000")
+          EntFire("env_fog_controller", "SetEndDist", "7000")
 
           EntFire("Entrance_door", "open", "", 2.5)
 
@@ -475,9 +480,44 @@ srm.mapspawn <- function () {
           FastNewApertureTransitions(-1, -1)
           srmFog()
 
+          // chamber(s)
+          EntFire("iw_entry_door", "open")
+
         case "factory":
-          FastNewApertureTransitions(-1, null)
+          sillyStupidFactorySucks()
           srmFog()
+          EntFire("env_fog_controller", "SetEndDist", "6000")
+
+          EntFire("AutoInstance1-inlex_door_entry", "open", "", 4.5)
+          local door1 = Entities.FindByClassnameNearest("func_button", Vector(2798, -514, 200), 10)
+          EntFireByHandle(door1, "press", "", 0, null, null)
+
+          // BtS
+          EntFire("BTS_2_door_1", "setanimation", "vert_door_opening")
+          local door2 = Entities.FindByClassnameNearest("trigger_once", Vector(3200, -288, 240), 10)
+          EntFireByHandle(door2, "kill", "", 0, null, null)
+          local trig1 = Entities.FindByClassnameNearest("trigger_multiple", Vector(3408, 104, 208), 10)
+          EntFireByHandle(trig1, "kill", "", 0, null, null)
+          EntFire("AutoInstance1-moth_cb_lever_hinge1", "AddOutput", "OnOpen BTS_3_Door_1:setanimation:open:0:1")
+          EntFire("AutoInstance1-moth_cb_lever_hinge1", "AddOutput", "OnOpen BTS_3_Door_1:setplaybackrate:5:0.03:1")
+          local trig2 = Entities.FindByClassnameNearest("trigger_once", Vector(5085.08, -104.76, 208), 10)
+          EntFireByHandle(trig2, "kill", "", 0, null, null)
+          EntFire("BTS_3_exit_door", "setanimation", "vert_door_opening")
+          local trig3 = Entities.FindByClassnameNearest("trigger_multiple", Vector(5784, -800, 592), 10)
+          EntFireByHandle(trig3, "kill", "", 0, null, null)
+          EntFire("BTS_4_Door_1", "setanimation", "open")
+          local trig4 = Entities.FindByClassnameNearest("trigger_multiple", Vector(5360, -936, 592), 10)
+          EntFireByHandle(trig4, "kill", "", 0, null, null)
+          EntFire("Autoinstance1-BTS_4_door_2", "setanimation", "open")
+          local trig5 = Entities.FindByClassnameNearest("trigger_multiple", Vector(6456, -2304, 594), 10)
+          EntFireByHandle(trig5, "kill", "", 0, null, null)
+          EntFire("InstanceAuto10-door_model", "setanimation", "open")
+          local trig6 = Entities.FindByClassnameNearest("trigger_multiple", Vector(6652, -2608, 594), 10)
+          EntFireByHandle(trig6, "kill", "", 0, null, null)
+          EntFire("InstanceAuto9-door_model", "setanimation", "open")
+          local trig7 = Entities.FindByClassnameNearest("trigger_once", Vector(8464, -2736, 485.33), 10)
+          EntFireByHandle(trig7, "kill", "", 0, null, null)
+          EntFire("AutoInstance1-d_factory_end_door", "setanimation", "vert_door_opening")
 
           break
 
@@ -637,6 +677,7 @@ function FastOldApertureTransitionPASTPOWER(idin, idout, mapNext){
 }
 
 function FastNewApertureTransitions(idin, idout) {
+  printl(idin)
   if(idout){
     local elename = "instanceauto"+idout+"-close"
     local elename2 = "instanceauto"+idout+"-elevator_1"
@@ -645,6 +686,7 @@ function FastNewApertureTransitions(idin, idout) {
       elename = "departure_logic-close"
       elename2 = "departure_logic-elevator_1"
       elename3 = "departure_logic-logic_source_elevator_door_open"
+      
     }
 
     EntFire(elename, "AddOutput", "OnTrigger "+elename2+":StartForward::0.8:1")
@@ -667,23 +709,24 @@ function FastNewApertureTransitions(idin, idout) {
       elename = "arrival_logic-elevator_1"
       elename2 = "arrival_logic-source_elevator_door_open_trigger"
     }
-    if(idin>100){
-      elename = "arrival_elevator-elevator_1"
-      elename2 = "arrival_elevator-source_elevator_door_open_trigger"
-    }
     EntFire(elename, "SetMaxSpeed", 450)
     EntFire(elename, "SetSpeed", 450, 0.1)
     EntFireByHandle(elename2, "AddOutput", "OnStartTouch instanceauto"+idin+"-open:trigger::0:1", 0, null, null)
     EntFireByHandle(elename2, "AddOutput", "OnStartTouch instanceauto"+idin+"-open:kill::0.3:1", 0, null, null)
-    EntFireByHandle(elename2, "AddOutput", "OnStartTouch arrival_logic-open:trigger::1:1", 0, null, null)
-    EntFireByHandle(elename2, "AddOutput", "OnStartTouch arrival_logic-open:kill::0.3:1", 0, null, null)
     EntFire("arrival_logic-open", "trigger", "", 1.6)
     EntFire("arrival_logic-open", "kill", "", 1.7)
-    EntFire("arrival_elevator-open", "trigger", "", 1.6)
-    EntFire("arrival_elevator-open", "kill", "", 1.7)
 
     // local trigPos = elename2.GetOrigin();
     // elename2.SetOrigin(Vector(trigPos.x, trigPos.y, trigPos.z + 300))
 
   }
+}
+
+function sillyStupidFactorySucks() {
+  local elename = "AutoInstance1-arrival_logic-elevator_1"
+  local elename2 = "AutoInstance1-arrival_logic-source_elevator_door_open_trigger"
+  EntFire(elename, "setmaxspeed", 450)
+  EntFire(elename, "setspeed", 450, 0.1)
+  EntFire(elename2, "AddOutput", "OnStartTouch autoinstance1-arrival_logic-open:trigger::0.2:1")
+  EntFire(elename2, "AddOutput", "OnStartTouch autoinstance1-arrival_logic-open:kill::0.23:1")
 }
