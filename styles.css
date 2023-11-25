@@ -1,0 +1,14 @@
+body, html {
+    margin: 0px;
+    background-color: black;
+}
+
+.center-div {
+    width: 800px;
+    height: 800px;
+    background-color: white;
+    transform: translate(-50%, -50%);
+    top: 68%;
+    left: 50%;
+    position: absolute;
+}
