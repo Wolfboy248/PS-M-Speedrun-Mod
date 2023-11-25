@@ -515,9 +515,72 @@ srm.mapspawn <- function () {
           local trig6 = Entities.FindByClassnameNearest("trigger_multiple", Vector(6652, -2608, 594), 10)
           EntFireByHandle(trig6, "kill", "", 0, null, null)
           EntFire("InstanceAuto9-door_model", "setanimation", "open")
-          local trig7 = Entities.FindByClassnameNearest("trigger_once", Vector(8464, -2736, 485.33), 10)
+          local trig7 = Entities.FindByClassnameNearest("trigger_once", Vector(8264, -2736, 485.33), 50)
           EntFireByHandle(trig7, "kill", "", 0, null, null)
           EntFire("AutoInstance1-d_factory_end_door", "setanimation", "vert_door_opening")
+          local trig8 = Entities.FindByClassnameNearest("trigger_once", Vector(9312, -2744, 624), 50)
+          EntFireByHandle(trig8, "kill", "", 0, null, null)
+          EntFire("AutoInstance1-do_entrance_door", "setanimation", "vert_door_opening")
+          EntFire("AutoInstance1-do_ap", "open")
+          EntFire("Autoinstance1-do_lever_hinge", "open")
+          EntFire("Autoinstance1-hub_button_down", "OnPressed AutoInstance1-hub_lift:Open::0.1:1")
+          EntFire("AutoInstance1-hub_lift", "setspeed", "300", 0.1)
+
+          break
+
+        case "core_access":
+          srmFog()
+          EntFire("hub_lift", "setspeed", "300")
+
+          // lab/generator access
+          EntFire("generator_area_noback", "setanimation", "open")
+          EntFire("t_hub_door_1", "setanimation", "vert_door_opening")
+          EntFire("lw_open_trigger", "kill")
+          EntFire("g_intro_door", "setanimation", "vert_door_opening")
+          local trig1 = Entities.FindByClassnameNearest("trigger_multiple", Vector(-1072, 64, 848), 10)
+          EntFireByHandle(trig1, "kill", "", 0, null, null)
+          local trig2 = Entities.FindByClassnameNearest("trigger_multiple", Vector(-2024, 696, 848), 10)
+          EntFireByHandle(trig2, "kill", "", 0, null, null)
+          EntFire("g_pipe_door", "setanimation", "vert_door_opening")
+          EntFire("g_pipe_room_ap", "open")
+          local trig3 = Entities.FindByClassnameNearest("trigger_multiple", Vector(-2728, 1296, 976), 10)
+          EntFireByHandle(trig3, "kill", "", 0, null, null)
+          EntFire("g_generator_door", "setanimation", "vert_door_opening")
+          EntFire("g_generator_room_ap", "open")
+          local trig4 = Entities.FindByClassnameNearest("trigger_multiple", Vector(-2960.15, 1151.26, 976), 10)
+          EntFireByHandle(trig4, "kill", "", 0, null, null)
+          EntFire("sd1_door1", "setanimation", "open")
+          EntFire("sd1_door2", "setanimation", "open")
+          local trig5 = Entities.FindByClassnameNearest("trigger_multiple", Vector(-2941, 1584, 1120.25), 10)
+          EntFireByHandle(trig5, "kill", "", 0, null, null)
+          EntFire("g_1_hinge", "AddOutput", "OnOpen g_s_glass_unbroke_1:break::0:1")
+
+          // security/testing access
+          local trig6 = Entities.FindByClassnameNearest("trigger_multiple", Vector(848, 64, 848), 10)
+          EntFireByHandle(trig6, "kill", "", 0, null, null)
+          EntFire("t_hub_door_2", "setanimation", "vert_door_opening")
+          local trig7 = Entities.FindByClassnameNearest("trigger_multiple", Vector(1080, 64, 848), 10)
+          EntFireByHandle(trig7, "kill", "", 0, null, null)
+          EntFire("t_sec_door_1", "setanimation", "vert_door_opening")
+          EntFire("security_area_tbeam", "SetLinearForce", 1400.0)
+
+          break
+
+        case "finale":
+          srmFog()
+          EntFire("env_fog_controller", "SetEndDist", "5000")
+          // this is a quick draft. Nowhere near final product.
+          EntFire("a_entrance_door", "setanimation", "vert_door_opening")
+          EntFire("a_entrance_door", "setplaybackrate", "300")
+          EntFire("a_entrance_door_trigger", "kill")
+          local trig1 = Entities.FindByClassnameNearest("trigger_once", Vector(16, -304.29, 208), 10)
+          EntFireByHandle(trig1, "kill", "", 0, null, null)
+          EntFire("b_entrance_door", "setanimation", "vert_door_opening")
+          EntFire("b_entrance_door", "setplaybackrate", "300")
+          EntFire("entrance_ap", "open")
+          local trig2 = Entities.FindByClassnameNearest("trigger_multiple", Vector(344, -32, 208), 10)
+          EntFireByHandle(trig2, "kill", "", 0, null, null)
+          EntFire("rs_main_door", "setanimation", "open")
 
           break
 
@@ -686,7 +749,7 @@ function FastNewApertureTransitions(idin, idout) {
       elename = "departure_logic-close"
       elename2 = "departure_logic-elevator_1"
       elename3 = "departure_logic-logic_source_elevator_door_open"
-      
+
     }
 
     EntFire(elename, "AddOutput", "OnTrigger "+elename2+":StartForward::0.8:1")
