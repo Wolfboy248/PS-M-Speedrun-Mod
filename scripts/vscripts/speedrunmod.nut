@@ -258,6 +258,12 @@ srm.mapspawn <- function () {
             EntFire("vault_exit_door", "setanimation", "vert_door_slow_opening", 0.3)
             local lastTrig = Entities.FindByClassnameNearest("trigger_once", Vector(5212, 2140, 2497.13), 10)
             EntFireByHandle(lastTrig, "kill", "", 0.3, null, null)
+            
+            //no fire after crane skip
+            EntFire("intro_door_fire_hurt", "kill")
+            EntFire("intro_water", "kill")
+            EntFire("intro_water_fire", "kill")
+            EntFire("crane_collapse_area_fire_sound", "kill")
 
             break
 
