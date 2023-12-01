@@ -21,7 +21,7 @@
             Game                "|gameinfo_path|../../common/Portal Stories Mel/portal_stories"
             Game                "|gameinfo_path|../../common/Portal Stories Mel/portal2"
             Game                "|gameinfo_path|../../common/Portal Stories Mel/portal2_dlc2"
-            Game                "D:\.p2-common\"
+            Game                "D:\.p2-common\" //TODO: remove this on release
         }   
     }
 }
