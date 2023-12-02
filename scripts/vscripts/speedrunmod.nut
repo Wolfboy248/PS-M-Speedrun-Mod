@@ -538,7 +538,7 @@ srm.mapspawn <- function () {
           srmFog()
           EntFire("hub_lift", "setspeed", "300")
 
-          // lab/generator access
+          // lab/generator access //
           EntFire("generator_area_noback", "setanimation", "open")
           EntFire("t_hub_door_1", "setanimation", "vert_door_opening")
           EntFire("lw_open_trigger", "kill")
@@ -561,14 +561,72 @@ srm.mapspawn <- function () {
           EntFireByHandle(trig5, "kill", "", 0, null, null)
           EntFire("g_1_hinge", "AddOutput", "OnOpen g_s_glass_unbroke_1:break::0:1")
 
-          // security/testing access
+          // security/testing access //
           local trig6 = Entities.FindByClassnameNearest("trigger_multiple", Vector(848, 64, 848), 10)
           EntFireByHandle(trig6, "kill", "", 0, null, null)
           EntFire("t_hub_door_2", "setanimation", "vert_door_opening")
           local trig7 = Entities.FindByClassnameNearest("trigger_multiple", Vector(1080, 64, 848), 10)
           EntFireByHandle(trig7, "kill", "", 0, null, null)
           EntFire("t_sec_door_1", "setanimation", "vert_door_opening")
+
+          // first trap chamber
+          local trig8 = Entities.FindByClassnameNearest("trigger_once", Vector(1632, 48, 880), 10)
+          EntFireByHandle(trig8, "kill", "", 0, null, null)
+          EntFire("ambush_arm_1", "SetAnimation", "openlab_01", 0.0)
+          EntFire("ambush_arm_2", "SetAnimation", "openlab_02", 0.25)
+          EntFire("ambush_arm_3", "SetAnimation", "openlab_03", 0.50)
+          EntFire("ambush_arm_4", "SetAnimation", "openlab_04", 0.55)
+          EntFire("ambush_arm_1_brush", "SetParentAttachmentMaintainOffset", "panel_attach", 1.25)
+          EntFire("ambush_arm_2_brush", "SetParentAttachmentMaintainOffset", "panel_attach", 1.50)
+          EntFire("ambush_arm_3_brush", "SetParentAttachmentMaintainOffset", "panel_attach", 1.75)
+          EntFire("ambush_arm_4_brush", "SetParentAttachmentMaintainOffset", "panel_attach", 1.80)
+          EntFire("security_area_blue_gel", "start", 0.2)
+
+          // second trap chamber
+          local trig9 = Entities.FindByClassnameNearest("trigger_once", Vector(2844, 64, 848), 10)
+          EntFireByHandle(trig9, "kill", "", 0, null, null)
+          EntFire("moving_test_brushes", "open")
+          EntFire("moving_test_brushes", "setspeed", "3000")
+          EntFire("sec_moving_panel_open_relay", "trigger", 0.5)
           EntFire("security_area_tbeam", "SetLinearForce", 1400.0)
+
+          // lever room
+          local trig10 = Entities.FindByClassnameNearest("trigger_multiple", Vector(1520, 1280, 1104), 10)
+          EntFireByHandle(trig10, "kill", "", 0, null, null)
+          EntFire("t_sec_door_2", "setanimation", "vert_door_opening")
+          local trig11 = Entities.FindByClassnameNearest("trigger_multiple", Vector(1176, 1280, 1104), 10)
+          EntFireByHandle(trig11, "disable", "", 0, null, null)
+          EntFire("t_sec_door_3", "setanimation", "vert_door_opening")
+
+          // turret factory access //
+          local trig12 = Entities.FindByClassnameNearest("trigger_multiple", Vector(0, -788, 848), 10)
+          EntFireByHandle(trig12, "kill", "", 0, null, null)
+          EntFire("tr_hub_door_1", "setanimation", "vert_door_opening")
+          local trig13 = Entities.FindByClassnameNearest("trigger_multiple", Vector(0, -1000, 848), 10)
+          EntFireByHandle(trig13, "kill", "", 0, null, null)
+          EntFire("tr_intro_door", "setanimation", "vert_door_opening")
+          EntFire("cs_virgil_228", "kill")
+          local trig14 = Entities.FindByClassnameNearest("trigger_multiple", Vector(-98, -1392, 794), 10)
+          local trig15 = Entities.FindByClassnameNearest("trigger_multiple", Vector(0, -1392, 848), 10)
+          EntFireByHandle(trig14, "AddOutput", "OnEndTouch obsr_turret_rl:trigger::0:1", 0, null, null)
+          EntFireByHandle(trig15, "kill", "", 0, null, null)
+          EntFire("obsr_door_1", "setanimation", "open")
+          EntFireByHandle(trig14, "AddOutput", "OnEndTouch turret_target_door3:setplaybackrate:30:0.03:1", 0, null, null)
+          local btn1 = Entities.FindByClassnameNearest("func_button", Vector(-140, -2720, 712), 10)
+          EntFireByHandle(btn1, "press", "", 0, null, null)
+          local btn2 = Entities.FindByClassnameNearest("func_button", Vector(-1778, -1920, 776), 10)
+          EntFireByHandle(btn2, "press", "", 0, null, null)
+          local trig16 = Entities.FindByClassnameNearest("trigger_once", Vector(-848, -1856, 656), 10)
+          EntFireByHandle(trig16, "disable", "", 0, null, null)
+          EntFire("turret_target_door2", "setanimation", "vert_door_opening")
+          EntFire("server_template_placed_rl", "AddOutput", "OnTrigger func_bunny_hop_blocker:disable::0:1")
+
+          // end
+          local trig17 = Entities.FindByClassnameNearest("trigger_once", Vector(0, 1920, 864), 10)
+          EntFireByHandle(trig17, "kill", "", 0, null, null)
+          EntFire("finale2_door", "setanimation", "vert_door_opening")
+          EntFire("transition_trigger", "enable")
+          EntFire("transition_trigger", "AddOutput", "OnStartTouch end_command:Command:changelevel " + (advanced ? "sp_" : "st_") + "a4_finale:1.8:1")
 
           break
 
@@ -585,7 +643,9 @@ srm.mapspawn <- function () {
           EntFire("b_entrance_door", "setplaybackrate", "300")
           EntFire("entrance_ap", "open")
           local trig2 = Entities.FindByClassnameNearest("trigger_multiple", Vector(344, -32, 208), 10)
-          EntFireByHandle(trig2, "kill", "", 0, null, null)
+          EntFireByHandle(trig2, "disable", "", 0, null, null)
+          EntFireByHandle(trig2, "AddOutput", "OnStartTouch rs_main_door:setplaybackrate:30:0.03:1", 0, null, null)
+          EntFireByHandle(trig2, "AddOutput", "OnEndTouch rs_main_door:setplaybackrate:30:0.03:1", 0, null, null)
           EntFire("rs_main_door", "setanimation", "open")
 
           break
