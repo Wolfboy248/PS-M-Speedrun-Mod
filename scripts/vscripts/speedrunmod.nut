@@ -643,11 +643,67 @@ srm.mapspawn <- function () {
           EntFire("b_entrance_door", "setplaybackrate", "300")
           EntFire("entrance_ap", "open")
           local trig2 = Entities.FindByClassnameNearest("trigger_multiple", Vector(344, -32, 208), 10)
-          EntFireByHandle(trig2, "disable", "", 0, null, null)
-          EntFireByHandle(trig2, "AddOutput", "OnStartTouch rs_main_door:setplaybackrate:30:0.03:1", 0, null, null)
-          EntFireByHandle(trig2, "AddOutput", "OnEndTouch rs_main_door:setplaybackrate:30:0.03:1", 0, null, null)
-          EntFire("rs_main_door", "setanimation", "open")
+          EntFireByHandle(trig2, "kill", "", 0, null, null)
+          EntFire("ls_main_door_trigger", "kill")
 
+          EntFire("rs_main_door", "setanimation", "open")
+          //room 1
+          EntFire("server_npc_1" , "AddOutput", "OnDeath server_npc_2:sethealth:0:0.06:1")
+          EntFire("server_npc_2" , "AddOutput", "OnDeath server_npc_5:sethealth:0:0.06:1")
+          EntFire("server_npc_5" , "AddOutput", "OnDeath server_npc_6:sethealth:0:0.06:1")
+          EntFire("server_npc_6" , "AddOutput", "OnDeath server_npc_1:sethealth:0:0.06:1")
+
+          EntFire("server_npc_3" , "AddOutput", "OnDeath server_npc_4:sethealth:0:0.06:1")
+          EntFire("server_npc_4" , "AddOutput", "OnDeath server_npc_7:sethealth:0:0.06:1")
+          EntFire("server_npc_7" , "AddOutput", "OnDeath server_npc_8:sethealth:0:0.06:1")
+          EntFire("server_npc_8" , "AddOutput", "OnDeath server_npc_3:sethealth:0:0.06:1")
+
+          EntFire("phase_1", "AddOutput", "OnHitMax rs_main_door:setanimation:open:0:1")
+          EntFire("phase_1", "AddOutput", "OnHitMax ls_main_door:setanimation:open:0:1")
+          EntFire("finale_start_rl", "AddOutput", "OnTrigger ls_main_door:setanimation:close:0:1")
+          EntFire("all_phases_completed", "AddOutput", "OnTrigger ls_main_door:setanimation:open:0:1")
+          //room 2
+          EntFire("server_npc_17" , "AddOutput", "OnDeath server_npc_18:sethealth:0:0.06:1")
+          EntFire("server_npc_18" , "AddOutput", "OnDeath server_npc_21:sethealth:0:0.06:1")
+          EntFire("server_npc_21" , "AddOutput", "OnDeath server_npc_22:sethealth:0:0.06:1")
+          EntFire("server_npc_22" , "AddOutput", "OnDeath server_npc_17:sethealth:0:0.06:1")
+
+          EntFire("server_npc_19" , "AddOutput", "OnDeath server_npc_20:sethealth:0:0.06:1")
+          EntFire("server_npc_20" , "AddOutput", "OnDeath server_npc_23:sethealth:0:0.06:1")
+          EntFire("server_npc_23" , "AddOutput", "OnDeath server_npc_24:sethealth:0:0.06:1")
+          EntFire("server_npc_24" , "AddOutput", "OnDeath server_npc_19:sethealth:0:0.06:1")
+
+          EntFire("server_npc_9" , "AddOutput", "OnDeath server_npc_10:sethealth:0:0.06:1")
+          EntFire("server_npc_10" , "AddOutput", "OnDeath server_npc_13:sethealth:0:0.06:1")
+          EntFire("server_npc_13" , "AddOutput", "OnDeath server_npc_14:sethealth:0:0.06:1")
+          EntFire("server_npc_14" , "AddOutput", "OnDeath server_npc_9:sethealth:0:0.06:1")
+
+          EntFire("server_npc_11" , "AddOutput", "OnDeath server_npc_12:sethealth:0:0.06:1")
+          EntFire("server_npc_12" , "AddOutput", "OnDeath server_npc_15:sethealth:0:0.06:1")
+          EntFire("server_npc_15" , "AddOutput", "OnDeath server_npc_16:sethealth:0:0.06:1")
+          EntFire("server_npc_16" , "AddOutput", "OnDeath server_npc_11:sethealth:0:0.06:1")
+          //top
+          EntFire("server_npc_27" , "AddOutput", "OnDeath server_npc_28:sethealth:0:0.06:1")
+          EntFire("server_npc_28" , "AddOutput", "OnDeath server_npc_31:sethealth:0:0.06:1")
+          EntFire("server_npc_31" , "AddOutput", "OnDeath server_npc_32:sethealth:0:0.06:1")
+          EntFire("server_npc_32" , "AddOutput", "OnDeath server_npc_27:sethealth:0:0.06:1")
+
+          EntFire("server_npc_25" , "AddOutput", "OnDeath server_npc_26:sethealth:0:0.06:1")
+          EntFire("server_npc_26" , "AddOutput", "OnDeath server_npc_29:sethealth:0:0.06:1")
+          EntFire("server_npc_29" , "AddOutput", "OnDeath server_npc_30:sethealth:0:0.06:1")
+          EntFire("server_npc_30" , "AddOutput", "OnDeath server_npc_25:sethealth:0:0.06:1")
+
+          EntFire("server_npc_39" , "AddOutput", "OnDeath server_npc_40:sethealth:0:0.06:1")
+          EntFire("server_npc_40" , "AddOutput", "OnDeath server_npc_35:sethealth:0:0.06:1")
+          EntFire("server_npc_35" , "AddOutput", "OnDeath server_npc_36:sethealth:0:0.06:1")
+          EntFire("server_npc_36" , "AddOutput", "OnDeath server_npc_39:sethealth:0:0.06:1")
+
+          EntFire("server_npc_33" , "AddOutput", "OnDeath server_npc_34:sethealth:0:0.06:1")
+          EntFire("server_npc_34" , "AddOutput", "OnDeath server_npc_37:sethealth:0:0.06:1")
+          EntFire("server_npc_37" , "AddOutput", "OnDeath server_npc_38:sethealth:0:0.06:1")
+          EntFire("server_npc_38" , "AddOutput", "OnDeath server_npc_33:sethealth:0:0.06:1")
+
+          EntFire("phase_3_completed", "AddOutput", "OnTrigger end_command:Command:script_execute meltele:0:1")
           break
 
         default:

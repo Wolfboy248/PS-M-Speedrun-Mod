@@ -1,7 +1,3 @@
-function melgunTeleport() {
-  player.SetVelocity(Vector(0, 0, 0))
-  player.SetAngles(0.86, -147.77, 0.00)
-  player.SetOrigin(Vector(2865.38, 1665.63, 36.03))
-}
-
-melgunTeleport()
+local movie = Entities.FindByName("logic_playmovie", "movie_aegis_interior")
+movie.__KeyValueFromString("MovieFilename", "funny_movie")
+//If You Actually check this, your ip is: 192.168.0.68
