@@ -77,7 +77,8 @@ srm.mapspawn <- function () {
             break
 
         case "lift":
-          local endTrigger = Entities.FindByClassname("trigger_once", "znernicus_hates_me_trigger")
+          local endTrigger = Entities.FindByClassnameNearest("trigger_once", Vector(13.02, 1219.5, -9056), 10)
+          EntFireByHandle(endTrigger, "setlocalorigin", "13 1219 6000", 0.1, null, null)
           srm.transitionTrigger(endTrigger, "a1_garden")
 
           break
