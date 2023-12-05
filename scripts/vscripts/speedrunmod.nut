@@ -34,15 +34,17 @@ srm.mapspawn <- function () {
         case "tramride":
             srmFog()
             local auto = Entities.FindByClassnameNearest("logic_auto", Vector(-6096, -6152, -112), 10)
+            local startfade=Entities.FindByName("env_fade", "StartFade")
+            startfade.__KeyValueFromString("ReverseFadeDuration", "0.5")
+            startfade.__KeyValueFromString("holdtime", "0.5")
             EntFireByHandle(auto, "disable", "", 0, null, null)
-            EntFire("StartFade", "FadeReverse", "")
+            EntFire("StartFade", "FadeReverse")
             EntFire("StartFade", "kill", "")
             EntFire("mel_logo", "kill")
             EntFire("mel_logo_camera_mover", "kill")
             EntFire("Intro_Viewcontroller", "disable", "", 3)                           // fuck??
             EntFire("Mel_Logo_Sound", "kill", "")
             EntFire("StartFade2", "kill", "")
-            EntFire("StartFade", "FadeReverse", "", 2)
             EntFire("Subway_TankTrain", "StartForward", "", 0.6)
             EntFire("chapter_subtitle_text", "Display", "", 3)
             EntFire("chapter_title_text", "Display", "", 3)
@@ -78,7 +80,10 @@ srm.mapspawn <- function () {
 
         case "lift":
           local endTrigger = Entities.FindByClassnameNearest("trigger_once", Vector(13.02, 1219.5, -9056), 10)
-          EntFireByHandle(endTrigger, "setlocalorigin", "13 1219 6000", 0.1, null, null)
+          EntFireByHandle(endTrigger, "enable", "", 0.1, null, null)
+          EntFireByHandle(endTrigger, "setlocalorigin", "192 1168 6000", 5, null, null)
+          EntFireByHandle(endTrigger, "Enable", "", 0.5, null, null)
+          EntFire("lift_door", "AddOutput", "OnAnimationBegun !self:setplaybackrate:100:0.03:-1")
           srm.transitionTrigger(endTrigger, "a1_garden")
 
           break
@@ -529,6 +534,10 @@ srm.mapspawn <- function () {
         case "factory":
           sillyStupidFactorySucks()
           srmFog()
+
+          //weird start dialogue
+          EntFire("cs_virgil_211", "kill")
+
           EntFire("env_fog_controller", "SetEndDist", "6000")
 
           EntFire("AutoInstance1-inlex_door_entry", "open", "", 4.5)
@@ -687,11 +696,16 @@ srm.mapspawn <- function () {
           EntFire("b_entrance_door", "setanimation", "vert_door_opening")
           EntFire("b_entrance_door", "setplaybackrate", "300")
           EntFire("entrance_ap", "open")
-          local trig2 = Entities.FindByClassnameNearest("trigger_multiple", Vector(344, -32, 208), 10)
-          EntFireByHandle(trig2, "kill", "", 0, null, null)
-          EntFire("ls_main_door_trigger", "kill")
-
-          EntFire("rs_main_door", "setanimation", "open")
+          local firstRoomTrigger="rs_main_door_trigger"
+          local secondRoomTrigger="ls_main_door_trigger"
+          //fast doors
+          EntFire(firstRoomTrigger, "enable", "", 0.1)
+          EntFire(firstRoomTrigger, "AddOutput", "OnStartTouch rs_main_door:setplaybackrate:30:0.03:0")
+          EntFire(firstRoomTrigger, "AddOutput", "OnEndTouch rs_main_door:setplaybackrate:30:0.03:0")
+          EntFire(secondRoomTrigger, "AddOutput", "OnStartTouch ls_main_door:setplaybackrate:30:0.03:0")
+          EntFire(secondRoomTrigger, "AddOutput", "OnEndTouch ls_main_door:setplaybackrate:30:0.03:0")
+          EntFire("ls_bot_door", "AddOutput", "OnAnimationBegun !self:setplaybackrate:30:0.03:0")
+          
           //room 1
           EntFire("server_npc_1" , "AddOutput", "OnDeath server_npc_2:sethealth:0:0.06:1")
           EntFire("server_npc_2" , "AddOutput", "OnDeath server_npc_5:sethealth:0:0.06:1")
@@ -703,10 +717,6 @@ srm.mapspawn <- function () {
           EntFire("server_npc_7" , "AddOutput", "OnDeath server_npc_8:sethealth:0:0.06:1")
           EntFire("server_npc_8" , "AddOutput", "OnDeath server_npc_3:sethealth:0:0.06:1")
 
-          EntFire("phase_1", "AddOutput", "OnHitMax rs_main_door:setanimation:open:0:1")
-          EntFire("phase_1", "AddOutput", "OnHitMax ls_main_door:setanimation:open:0:1")
-          EntFire("finale_start_rl", "AddOutput", "OnTrigger ls_main_door:setanimation:close:0:1")
-          EntFire("all_phases_completed", "AddOutput", "OnTrigger ls_main_door:setanimation:open:0:1")
           //room 2
           EntFire("server_npc_17" , "AddOutput", "OnDeath server_npc_18:sethealth:0:0.06:1")
           EntFire("server_npc_18" , "AddOutput", "OnDeath server_npc_21:sethealth:0:0.06:1")
