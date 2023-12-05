@@ -1,0 +1,5 @@
+tramride fade in remove
+faster fade for old apeture
+optional: remove weird overgrown dialogue 
+optional: weird dialogue at the start of factory
+fix finale triggers
