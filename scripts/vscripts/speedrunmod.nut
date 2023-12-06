@@ -158,6 +158,11 @@ srm.mapspawn <- function () {
 
             // beeg door
             EntFire("vault_manager", "AddOutput", "OnChangeToAllTrue vault_door:setplaybackrate:50:0.3:-1")
+
+            // advanced mode
+            EntFire("lab_door", "setanimation", "open")
+            local trig1 = Entities.FindByClassnameNearest("trigger_multiple", Vector(1744, 1200, 96), 10)
+            EntFireByHandle(trig1, "kill", "", 0, null, null)
             break
 
         case "underbounce":
@@ -170,6 +175,8 @@ srm.mapspawn <- function () {
             local stupidLights = Entities.FindByName("logic_relay", "Power_On_Start_Relay")
             EntFireByHandle(stupidLights, "kill", "", 0, null, null)
 
+            // advanced mode
+            FastOldApertureTransition(1, 16, "a2_once_upon")
             break
 
         case "once_upon":
@@ -259,7 +266,9 @@ srm.mapspawn <- function () {
             EntFire("Offices_2_Door_1", "SetAnimation", "open")
             local door3Trig = Entities.FindByClassnameNearest("trigger_multiple", Vector(1408, 1816, 320), 10)
             EntFireByHandle(door3Trig, "kill", "", 0, null, null)
-            EntFire("AutoInstance1-lever_hinge", "AddOutput", "OnFullyOpen AutoInstance1-sd1_door1:setplaybackrate:30:0.01:-1")
+            EntFire("AutoInstance1-lever_hinge", "AddOutput", "OnOpen AutoInstance1-sd1_door1:setanimation:open:0.01:-1")
+            EntFire("AutoInstance1-lever_hinge", "AddOutput", "OnOpen AutoInstance1-sd1_door1:setplaybackrate:30:0.02:-1")
+            EntFire("AutoInstance1-lever_hinge", "AddOutput", "OnOpen AutoInstance1-sd1_door1:kill::0.3:-1")
 
             // open pump control doors faster
             EntFire("Pre_Pump_Control_Room_Activate", "AddOutput", "OnTrigger pre_pump_control_room_left_door:setanimation:open:0:-1")
@@ -369,8 +378,13 @@ srm.mapspawn <- function () {
           local endEleTrig = Entities.FindByClassnameNearest("trigger_once", Vector(1632, 248, 64), 10)
           EntFireByHandle(endEleTrig, "kill", "", 0, null, null)
           EntFire("InstanceAuto9-close", "AddOutput", "OnTrigger !self:RunScriptCode:SendToConsole(\"changelevel "+ (advanced ? "sp_" : "st_") + "a3_paint_fling"+"\"):2.5:1")
-          EntFire("InstanceAuto9-close", "AddOutput", "OnTrigger end_fade:Fade::0:1")
+          EntFire("InstanceAuto9-close", "AddOutput", "OnTrigger end_fade:Fade::2:1")
           EntFire("InstanceAuto9-logic_source_elevator_door_open", "trigger")
+
+          // advanced mode
+          EntFire("InstanceAuto6-close", "AddOutput", "OnTrigger !self:RunScriptCode:SendToConsole(\"changelevel "+ (advanced ? "sp_" : "st_") + "a3_paint_fling"+"\"):2.5:1")
+          EntFire("InstanceAuto6-close", "AddOutput", "OnTrigger end_fade:Fade::2:1")
+          EntFire("InstanceAuto6-logic_source_elevator_door_open", "trigger")
           break
 
         case "paint_fling":
@@ -381,6 +395,9 @@ srm.mapspawn <- function () {
           EntFire("Entrance_Door", "open", "", 3)
           local betweenChambersTrig = Entities.FindByClassnameNearest("trigger_once", Vector(-664, 832.01, 256), 10)
           EntFireByHandle(betweenChambersTrig, "AddOutput", "OnStartTouch Entry_door_2:open::0:1", 0, null, null)
+
+          // advanced mode
+          FastNewApertureTransitions(52, 33)
 
           break
 
