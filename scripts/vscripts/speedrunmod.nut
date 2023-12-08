@@ -84,7 +84,13 @@ srm.mapspawn <- function () {
           EntFireByHandle(endTrigger, "setlocalorigin", "192 1168 6000", 5, null, null)
           EntFireByHandle(endTrigger, "Enable", "", 0.5, null, null)
           EntFire("lift_door", "AddOutput", "OnAnimationBegun !self:setplaybackrate:100:0.03:-1")
-          srm.transitionTrigger(endTrigger, "a1_garden")
+          // srm.transitionTrigger(endTrigger, "a1_garden")
+          local fadeout = Entities.FindByName("env_fade", "end_fade")
+          // WHY THE FUCK WILL YOU NOT FUCKING CHANGE THE DURATION WHY WHY WHY WHY WHY WHY WHY WHY WHY
+          fadeout.__KeyValueFromString("duration", "0.0")
+          fadeout.__KeyValueFromString("holdtime", "0.0")
+          fadeout.__KeyValueFromString("ReverseFadeDuration", "0.0")
+          EntFireByHandle(endTrigger, "AddOutput", "OnStartTouch end_fade:fade::0:1", 0, null, null)
 
           break
 
