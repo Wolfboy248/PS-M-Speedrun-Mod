@@ -84,7 +84,7 @@ srm.mapspawn <- function () {
           EntFireByHandle(endTrigger, "setlocalorigin", "192 1168 6000", 5, null, null)
           EntFireByHandle(endTrigger, "Enable", "", 0.5, null, null)
           EntFire("lift_door", "AddOutput", "OnAnimationBegun !self:setplaybackrate:100:0.03:-1")
-          // srm.transitionTrigger(endTrigger, "a1_garden")
+          srm.transitionTrigger(endTrigger, "a1_garden")
           local fadeout = Entities.FindByName("env_fade", "end_fade")
           // WHY THE FUCK WILL YOU NOT FUCKING CHANGE THE DURATION WHY WHY WHY WHY WHY WHY WHY WHY WHY
           fadeout.__KeyValueFromString("duration", "0.0")
@@ -160,7 +160,7 @@ srm.mapspawn <- function () {
             local removeTrig = Entities.FindByClassnameNearest("trigger_multiple", Vector(1744, 2460, 96), 10)
             EntFireByHandle(removeTrig, "kill", "", 0, null, null)
             EntFire("lower_office_door", "SetAnimation", "open")
-            
+
 
             // beeg door
             EntFire("vault_manager", "AddOutput", "OnChangeToAllTrue vault_door:setplaybackrate:50:0.3:-1")
@@ -308,7 +308,7 @@ srm.mapspawn <- function () {
             EntFire("vault_exit_door", "setanimation", "vert_door_slow_opening", 0.3)
             local lastTrig = Entities.FindByClassnameNearest("trigger_once", Vector(5212, 2140, 2497.13), 10)
             EntFireByHandle(lastTrig, "kill", "", 0.3, null, null)
-            
+
             //no fire after crane skip
             EntFire("intro_door_fire_hurt", "kill")
             EntFire("intro_water", "kill")
@@ -466,8 +466,9 @@ srm.mapspawn <- function () {
           // starting cutscene (likely equally as bad as concepts)
           local player = Entities.FindByClassnameNearest("player", Vector(0, 0, 0), 10000)
           EntFire("intro_elevator_train", "setlocalorigin", "-1211 -3296 -400")
-          EntFireByHandle(player, "setlocalorigin", "-1211 -3296 -460", 0.2, null, null)
-          EntFireByHandle(player, "setlocalorigin", "-1211 -3296 -460", 0.3, null, null) // incase the player pauses for some fucking reason
+          EntFireByHandle(player, "setlocalorigin", "-1211 -3286 -460", 0.2, null, null)
+          // EntFireByHandle(player, "setlocalorigin", "-1211 -3286 -430", 0.5, null, null)
+          EntFireByHandle(player, "setlocalorigin", "-1211 -3286 -460", 0.3, null, null) // incase the player pauses for some fucking reason
           local deathTrig = Entities.FindByClassnameNearest("trigger_hurt", Vector(-904, -3232, -264), 10)
           EntFireByHandle(deathTrig, "disable", "", 0, null, null)
           EntFireByHandle(deathTrig, "enable", "", 4, null, null)
@@ -480,7 +481,7 @@ srm.mapspawn <- function () {
           EntFire("top_path_7", "setlocalorigin", "-1211 -3296 -400")
           EntFire("top_path_5", "setlocalorigin", "-1211 -3296 0")
           EntFire("top_path_5", "AddOutput", "OnPass intro_elevator:setanimation:dooropen:0.2:1")
-          player.SetOrigin(Vector(-1211, -3296, -400 - 50))
+          // player.SetOrigin(Vector(-1211, -3296, -400 - 50))
 
           // Fade for the start cuz its shit
           EntFire("end_command", "Command", "ent_fire end_fade fadereverse")
@@ -551,6 +552,9 @@ srm.mapspawn <- function () {
           FastNewApertureTransitions(-1, -1)
           srmFog()
 
+          // start door
+          EntFire("@entry_door", "open", "", 2.5)
+
           // chamber(s)
           EntFire("iw_entry_door", "open")
 
@@ -572,7 +576,7 @@ srm.mapspawn <- function () {
           EntFire("intro_train_2_rl", "AddOutput", "OnTrigger BTS_3_FakeCube_Tanktrain4:setspeed:250:0.06:-1")
           EntFire("intro_train_2_rl", "AddOutput", "OnTrigger BTS_3_FakeCube_Tanktrain4:stop::1.43:-1")
           EntFire("intro_train_2_rl", "AddOutput", "OnTrigger BTS_3_FakeCube_Tanktrain4:fireuser1::1.9:-1")
-          EntFire("intro_train_2_rl", "AddOutput", "OnTrigger BTS_3_FakeCube_Tanktrain4:fireuser2::5.2:-1") 
+          EntFire("intro_train_2_rl", "AddOutput", "OnTrigger BTS_3_FakeCube_Tanktrain4:fireuser2::5.2:-1")
           EntFire("intro_train_2_rl", "AddOutput", "OnTrigger BTS_3_FakeCube_Tanktrain4:setmaxspeed:125:3.4:-1")
           EntFire("BTS_2_door_1", "setanimation", "vert_door_opening")
           local door2 = Entities.FindByClassnameNearest("trigger_once", Vector(3200, -288, 240), 10)
@@ -728,7 +732,7 @@ srm.mapspawn <- function () {
           EntFire(secondRoomTrigger, "AddOutput", "OnStartTouch ls_main_door:setplaybackrate:30:0.03:0")
           EntFire(secondRoomTrigger, "AddOutput", "OnEndTouch ls_main_door:setplaybackrate:30:0.03:0")
           EntFire("ls_bot_door", "AddOutput", "OnAnimationBegun !self:setplaybackrate:30:0.03:0")
-          
+
           //room 1
           EntFire("server_npc_1" , "AddOutput", "OnDeath server_npc_2:sethealth:0:0.06:1")
           EntFire("server_npc_2" , "AddOutput", "OnDeath server_npc_5:sethealth:0:0.06:1")
