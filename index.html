@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PS:Mel Speedrun Mod</title>
+    <title>PS Mel Speedrun Mod</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css" integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY=" crossorigin="anonymous">
 
@@ -10,24 +10,26 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
     <body>
-        <div class="container sticky">
-            <nav class="msm-nav">
-                <div class="main-links col-sm-12 col-md-9">
-                    <a href="#about">About</a>
-                    <a href="#modes">Modes</a>
+        <div class="msm-sidebar">
+            <div class="msm-header">
+                <div class="bg-img">
+                    <img class="msm-header-logo" src="img/logo.png" alt="">
                 </div>
-                <div class="side-links">
-                    <a href="https://discordapp.com/invite/hRwE4Zr" title="Join the discord server!" target="_blank"><i class="fa fa-discord"></i></a>
-                    <a href="https://github.com/Wolfboy248/PS-M-Speedrun-Mod" title="GitHub repository" target="_blank"><i class="fa fa-github"></i></a>
+                <div class="msm-buttons">
+                    <div class="msm-header-line"></div>
+                    <div class="msm-page-div">
+                        <a class="about-link" href="#about">About</a>
+                        <a class="modes-link" href="#modes">Modes</a>
+                    </div>
                 </div>
-            </nav>
+            </div>
         </div>
-
-        <div class="container msm-content about hidden">
+        <div class="msm-content about">
             <div class="p2box col-12">
                 <div class="logo-div">
-                    <div class="bg-img">
-                        <img class="logo-img" src="img/logo.png" alt="">
+                    <div style="background-image: url(img/once_upon.jpg);" class="bg-img">
+                        <div class="overlay"></div>
+                        <p class="about-title">ABOUT</p>
                     </div>
                 </div>
 
@@ -35,7 +37,7 @@
                 <h1>What is Portal Stories: Mel Speedrun Mod?</h1>
                 <p>
                     Welcome to the official site for the <b>Portal Stories: Mel Speedrun Mod!</b> The mod is meant to
-                    change each individual level in Portal Stories: Mel to make them <b>faster</b>, using only <a target="_blank" href="https://developer.valvesoftware.com/wiki/VScript"><b>vscript</b></a>! 
+                    change each individual level in Portal Stories: Mel to make them <b>faster</b>, using only <a target="_blank" href="https://developer.valvesoftware.com/wiki/VScript"><b>vscript</b></a>!
                     This means that no recompiling of maps was done, which can cause many errors and inconsistencies. It also
                     <b>greatly</b> reduces file sizes. Things such as skipping cutscenes and making doors open faster are
                     things included in this mod. The aim of this mod is to make the Mel speedrun more enjoyable,
@@ -74,8 +76,8 @@
                 </p>
             </div>
         </div>
-        <div class="container msm-content modes hidden">
-            <div class="p2box col-12">
+        <div class="msm-content modes">
+            <div class="p2box">
                 <div class="mode">
                     <div class="mode-header">
                         <h1>Normal mode</h1>
@@ -92,7 +94,7 @@
             </div>
         </div>
         <div class="container msm-content sick hidden">
-            <div class="p2box col-12">
+            <div class="p2box">
                 very sick
             </div>
         </div>
