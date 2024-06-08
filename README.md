@@ -9,5 +9,4 @@
 - VGUI changes like in the original P2SM
 
 ## To-Do
-- Make changes for advanced mod
 - Add celeste mode
