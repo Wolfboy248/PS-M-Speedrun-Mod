@@ -395,7 +395,9 @@ srm.mapspawn <- function () {
 
         case "paint_fling":
           srmFog()
-          FastNewApertureTransitions(52, 34)
+          // FastNewApertureTransitions(52, 34)
+
+          EntFire("instanceauto34-close", "AddOutput", "OnTrigger InstanceAuto34-elevator_1_player_teleport:RunScriptCode:ReadyForTransition():1.3:1")
           EntFire("env_fog_controller", "SetEndDist", "3000")
 
           EntFire("Entrance_Door", "open", "", 3)
@@ -516,6 +518,8 @@ srm.mapspawn <- function () {
           EntFire("door_5", "open")
           EntFire("@entry_door1", "open")
 
+          EntFire("instanceauto39-close", "AddOutput", "OnTrigger InstanceAuto39-elevator_1_player_teleport:RunScriptCode:ReadyForTransition():1.3:1")
+
           break
 
         case "tb_over_goo":
@@ -539,6 +543,11 @@ srm.mapspawn <- function () {
 
         case "two_of_a_kind":
           FastNewApertureTransitions(-1, 24)
+
+          if (advanced) {
+            FastNewApertureTransitions(-1, 26)
+          }
+
           srmFog()
 
           EntFire("r1_entrance_door", "open", "", 2.5)
@@ -966,6 +975,9 @@ function FastNewApertureTransitions(idin, idout) {
     EntFire("departure_logic-logic_source_elevator_door_open", "kill")
     EntFire(elename, "AddOutput", "OnTrigger InstanceAuto"+idout+"-elevator_1_player_teleport:RunScriptCode:ReadyForTransition():1.3:1")
     EntFire(elename, "AddOutput", "OnTrigger departure_logic-elevator_1_player_teleport:RunScriptCode:ReadyForTransition():1.3:1")
+    if (advanced) {
+      EntFire(elename, "AddOutput", "OnTrigger @transition_from_map:trigger:1.3:1")
+    }
   }
 
   if(idin){
