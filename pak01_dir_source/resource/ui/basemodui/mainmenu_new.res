@@ -101,7 +101,7 @@
 		"visible"					"1"
 		"enabled"					"0"
 		"tabPosition"				"0"
-		"labelText"					"BETA 0.1"
+		"labelText"					"BETA 0.3"
 		"style"						"MainMenuButton"
 		"url"						"javascript:window.location.assign('https://github.com/Wolfboy248/PS-M-Speedrun-Mod/releases');"
 		"ActivationType"			"1"
