@@ -1,128 +1,30 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PS Mel Speedrun Mod</title>
+    <title>Mel Speedrun Mod</title>
+
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css" integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY=" crossorigin="anonymous">
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script defer src="script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 </head>
-    <body>
-        <div class="msm-sidebar">
-            <div class="msm-header">
-                <div class="bg-img">
-                    <img class="msm-header-logo" src="img/logo.png" alt="">
-                </div>
-                <div class="msm-buttons">
-                    <div class="msm-header-line"></div>
-                    <div class="msm-page-div">
-                        <a class="about-link" href="#about">About</a>
-                        <a class="modes-link" href="#modes">Modes</a>
-                    </div>
-                </div>
+<body>
+    <div class="container" id="container">
+        <div class="parallax" id="parallax-3" speed="2" style="transform: translate3d(0px, 0px, 0px)">
+            <div class="overlay"></div>
+        </div>
+        <div class="parallax" id="parallax-2" speed="1.7" style="transform: translate3d(0px, 0px, 0px)"></div>
+        <div class="parallax" id="parallax-4" speed="2.4" style="transform: translate3d(0px, 0px, 0px)">
+            <div class="overlay2"></div>
+        </div>
+        <div class="parallax" id="parallax-1" threshmin="0" threshmax="800">
+            <div fade-start="200" fade-end="800" class="logo-container" id="logoContainer">
+                <img id="logo" src="img/logo.png" alt="">
             </div>
         </div>
-        <div class="msm-content about">
-            <div class="p2box col-12">
-                <div class="logo-div">
-                    <div style="background-image: url(img/once_upon.jpg);" class="bg-img">
-                        <div class="overlay"></div>
-                        <p class="about-title">ABOUT</p>
-                    </div>
-                </div>
-
-
-                <h1>What is Portal Stories: Mel Speedrun Mod?</h1>
-                <p>
-                    Welcome to the official site for the <b>Portal Stories: Mel Speedrun Mod!</b> The mod is meant to
-                    change each individual level in Portal Stories: Mel to make them <b>faster</b>, using only <a target="_blank" href="https://developer.valvesoftware.com/wiki/VScript"><b>vscript</b></a>!
-                    This means that no recompiling of maps was done, which can cause many errors and inconsistencies. It also
-                    <b>greatly</b> reduces file sizes. Things such as skipping cutscenes and making doors open faster are
-                    things included in this mod. The aim of this mod is to make the Mel speedrun more enjoyable,
-                    with many <b>quality of life improvements</b> and <b>skipped cutscenes/downtime</b>.
-                </p>
-
-                <h1>Progress</h1>
-                <h2>Done</h2>
-                <p>
-                    <ul>
-                        <li>Chapter 1</li>
-                        <li>Chapter 2</li>
-                        <li>Chapter 3</li>
-                        <li>Chapter 4</li>
-                        <li>GUI changes to match the original style of P2SM</li>
-                    </ul>
-                </p>
-                <h2>To-Do</h2>
-                <p>
-                    <ul>
-                        <li>Chapter 5</li>
-                        <li>Custom modes such as Celeste from the Portal 2 Speedrun Mod and Odyssey mod made by PortalRunner</li>
-                        <li>Go through Advanced mode to check for anything that needs to be changed</li>
-                    </ul>
-                </p>
-
-                <h1>Contributors:</h1>
-                <p>This project wouldn't be possible without these lovely people:</p>
-                <p>
-                    <ul>
-                        <li><b>Alexz -</b> Help with setting up vscript and modifying levels</li>
-                        <li><b>ArcherTheReal -</b> Help with modifying levels</li>
-                        <li><b>Krzyhau -</b> Work on the original P2SM</li>
-                        <li><b>Betsruner -</b> Work on the original P2SM</li>
-                    </ul>
-                </p>
-            </div>
-        </div>
-        <div class="msm-content modes">
-            <div class="p2box">
-                <div class="mode">
-                    <div class="mode-header">
-                        <h1>Normal mode</h1>
-                    </div>
-                    <p>
-                        The main and mode of Speedrun Mod. It's also a base to all other modes (there are no other modes).
-                        <ul>
-                            <li>Most of the game's downtime is removed or shortened (like elevators, doors etc.)</li>
-                            <li>Most of cutscenes were removed or shortened (like Lift, Finale etc.)</li>
-                        </ul>
-                    </p>
-                </div>
-                <h1>THERE ARE NO MORE MODES! Hopefully there will be more in the future</h1>
-            </div>
-        </div>
-        <div class="container msm-content sick hidden">
-            <div class="p2box">
-                very sick
-            </div>
-        </div>
-
-
-        <script>
-
-            //main webpage functionality
-            function showSitePart(name){
-                let fixedName = name.replace("#", ".");
-                $(".msm-content").addClass("hidden");
-                $(fixedName + ".msm-content").removeClass("hidden");
-
-                $(".msm-nav a").removeClass("clicked");
-                $(".msm-nav a[href='"+name+"']").addClass("clicked");
-            }
-            $("a[href*='#']").click(function(e) {
-                let href = $(this).attr("href");
-                showSitePart(href);
-            });
-
-            let anchor = window.top.location.hash || "#about";
-            showSitePart(anchor);
-
-            if(window.top.location.hash){
-                window.scrollTo(0, 0);
-                setTimeout(function() {window.scrollTo(0, 0);}, 1);
-            }
-        </script>
-    </body>
+    </div>
+</body>
 </html>
