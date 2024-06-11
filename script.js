@@ -47,6 +47,18 @@ function updateScroll() {
         } else {
             $(layer).css("transform", "translate3d(0px, " + top / parseFloat(layer.getAttribute("speed")) + "px, 0px")
         }
+
+        let fadeElements = document.querySelectorAll(".fade");
+
+        for (let index = 0; index < fadeElements.length; index++) {
+            const element = fadeElements[index];
+
+            let fadeStart = parseFloat(element.getAttribute("fade-start"))
+            let fadeEnd = parseFloat(element.getAttribute("fade-end"))
+    
+            let logoProgress = Math.min((top - fadeEnd) / (fadeStart - fadeEnd))
+            $(element).css("opacity", logoProgress)
+        }
     }
 }
 
@@ -96,7 +108,6 @@ function updateMouseScroll() {
         nextScrollComingFromMouseWheel = true;
         var newTop = mouseScrollTarget.scrollTop + moveY;
         mouseScrollTarget.scrollTop = newTop;
-        console.log(newTop)
 
         updateScroll()
 

@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mel Speedrun Mod</title>
+    <title>Portal Stories: Mel Speedrun Mod</title>
 
     <link rel="stylesheet" href="styles.css">
 
     <script defer src="script.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container" id="container">
@@ -21,9 +24,63 @@
             <div class="overlay2"></div>
         </div>
         <div class="parallax" id="parallax-1" threshmin="0" threshmax="800">
-            <div fade-start="200" fade-end="800" class="logo-container" id="logoContainer">
-                <img id="logo" src="img/logo.png" alt="">
+            <div fade-start="1100" fade-end="1400" class="logo-container fade" id="logoContainer">
+                <img id="logo" src="img/logo.png" alt=""><br>
             </div>
+            <div class="downloadcontainer fade" id="downloadContainer" fade-start="200" fade-end="600">
+                <a class="btn-1" target="_blank" href="https://github.com/Wolfboy248/PS-M-Speedrun-Mod/releases">
+                    <span>Download</span>
+                </a>
+            </div>
+        </div>
+
+        <a class="btn-2 fade" fade-start="1400" fade-end="1200" target="_blank" href="https://github.com/Wolfboy248/PS-M-Speedrun-Mod/releases">
+            <span>Download</span>
+        </a>
+
+        <div class="content" id="content">
+            <div class="textcontainer" id="textcontainer">
+                <h1>About</h1>
+                <p>
+                    Portal Stories: Mel Speedrun Mod is a mod tailored specifically for speedrunners. Portal Stories: Mel Speedrun Mod transforms the original campaign by streamlining levels, elimination cutscenes, and removing other annoyances, making the experience smoother and more engaging. Tried and true to the original <a target="_blank" href="https://sm.portal2.sr/">Portal 2 Speedrun Mod</a>, the mod was made with <a target="_blank" href="https://developer.valvesoftware.com/wiki/VScript">VScript</a>, and the source code can be found on our <a target="_blank" href="https://github.com/Wolfboy248/PS-M-Speedrun-Mod">GitHub</a>.
+                </p>
+            </div>
+    
+            <div class="imgcontainer" id="imgcontainer" style="margin-top: 60px;">
+                <img src="img/montage.gif" alt="">
+            </div>
+
+            <div class="textcontainer" id="textcontainer">
+                <h1>Installation</h1>
+                <p>
+                    <ul class="list">
+                        <li>For now, this mod is for Windows and Linux only. Sorry, Mac users :/. Make sure you have Portal Stories: Mel downloaded on your device (Portal 2 being installed is NOT a requirement).</li>
+                        <li>Unzip 'Portal Stories Mel Speedrun Mod' folder into the 'sourcemods' directory (it's default location is 'Steam/steamapps/sourcemods/').</li>
+                        <li>Restart Steam.</li>
+                        <li>A new game called "Portal Stories: Mel Speedrun Mod" should appear in your library.</li>
+                    </ul>
+                    
+                    <p>
+                        Keep in mind that this mod is built on janky code to remove/speed up elements in a map, so if you encounter an issue, try one of these things:
+                    </p>
+                    <ul class="list" style="list-style-type: disc;">
+                        <li>Launching the <b>main game</b>, then the mod</li>
+                        <li>Not using any other extensions (like SAR, for instance) because they might not like each other</li>
+                        <li>Updating other extensions (like SAR), because they might be the one causing trouble</li>
+                        <li>Taking a hot bath and <s>at least 30 minutes of walk in fresh air</s><code>#stayathome</code></li>
+                        <li>committing a jump from a ground floor window</li>
+                    </ul>
+
+                    <p>
+                        If none of these work, seek help in the <a href="https://discord.gg/p2sr">P2SR Discord Server</a>
+                    </p>
+                </p>
+            </div>
+
+            <div class="textcontainer" id="textcontainer">
+                <h2>Have fun speedrunning!</h2>
+            </div>
+
         </div>
     </div>
 </body>
